@@ -632,7 +632,7 @@ calculateDeltaP <- function(vecA, vecC) {
   #antecedent of the conditional true, VecC the conditional. 
   
   if (!is.vector(vecA) |!is.vector(vecC)){
-    stop('Invalid input: Excpected 2 vectors')
+    stop('Invalid input: Expected 2 vectors')
   }
   if (length(vecA)!= length(vecC)){
     stop('Invalid input: Unequal vector length.')
@@ -676,11 +676,12 @@ calculateDeltaP <- function(vecA, vecC) {
         + cBlanks[[5]] + cBlanks[[6]]) #irrelevant values equal 0
   nA<- 6 - A
   tempAC <- 0
+  if (length(vecA)>0){
   for (i in 1 : length(vecA)){
     if (vecA[i] & vecC[i]){
       tempAC <- tempAC + 1
     }
-  }
+  }}
   AC<- (tempAC + aBlanks[[1]]*cBlanks[[1]] + aBlanks[[2]]*cBlanks[[2]]
         + aBlanks[[3]]*cBlanks[[3]] + aBlanks[[4]]*cBlanks[[4]] 
         + aBlanks[[5]]*cBlanks[[5]]  + aBlanks[[6]]*cBlanks[[6]])
@@ -716,7 +717,7 @@ calculateInterpretations <- function(vecA, vecC) {
   #antecedent of the conditional true, VecC the conditional. 
   
   if (!is.vector(vecA) |!is.vector(vecC)){
-    stop('Invalid input: Excpected 2 vectors')
+    stop('Invalid input: Expected 2 vectors')
   }
   if (length(vecA)!= length(vecC)){
     stop('Invalid input: Unequal vector length.')
@@ -761,18 +762,22 @@ calculateInterpretations <- function(vecA, vecC) {
   nA<- 6 - A
   nC<- 6 - C
   tempAC <- 0
+  if (length(vecA)>0){
   for (i in 1 : length(vecA)){
     if (vecA[i] & vecC[i]){
       tempAC <- tempAC + 1
     }
   }
+  }
   AC<- (tempAC + aBlanks[[1]]*cBlanks[[1]] + (1-aBlanks[[2]])*(1-cBlanks[[2]])
         + (1-aBlanks[[3]])*(1 - cBlanks[[3]]) + (1-aBlanks[[4]])*(1-cBlanks[[4]]) 
         + (1-aBlanks[[5]])*(1-cBlanks[[5]])  + (1-aBlanks[[6]])*(1-cBlanks[[6]]))
   tempnAnC <- 0
-  for (i in 1 : length(vecA)){
-    if (!vecA[i] & !vecC[i]){
+  if(length(vecA)>0){
+    for (i in 1 : length(vecA)){
+      if (!vecA[i] & !vecC[i]){
       tempnAnC <- tempnAnC + 1
+      }
     }
   }
   nAnC <- (tempnAnC + (1-aBlanks[[1]])*(1-cBlanks[[1]]) + aBlanks[[2]]*cBlanks[[2]]
@@ -820,8 +825,8 @@ calculateInterpretations <- function(vecA, vecC) {
 #-------------------------------------------------------------------------------
 # TESTING THE SUBROUTINES
 
-vectorA <- c(F,F,F,F)
-vectorC <- c(F,F,F,F)
+vectorA <- logical() 
+vectorC <- logical() 
 calculateDeltaP(vectorA, vectorC)
 calculateInterpretations(vectorA, vectorC)
 
