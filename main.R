@@ -649,10 +649,9 @@ calculateDeltaP <- function(vecA, vecC) {
   
   #-----------------------------------------------------------------------------
   #Vectors shorter than 6 values are taken to be uncertainty tasks with an 
-  #appropriate amount of blank sides.
+  #appropriate number of blank sides.
   aBlanks = list(c(0), c(0), c(0), c(0), c(0), c(0))
   cBlanks = list(c(0), c(0), c(0), c(0), c(0), c(0))#eventuell NULL setzen
-  consituents <- vector(mode = "list", length = 0)
   constituents <<- NULL
   numberOfConceiledSides <- (6 - length(vecA))
   
@@ -703,7 +702,6 @@ calculateDeltaP <- function(vecA, vecC) {
     }
   }
   deltaP<-pCgA-pCgnA
-  print(length(deltaP))
   return(summary(cbind(deltaP))) #returns the summary of the delta P column
 }
 
@@ -737,7 +735,6 @@ calculateInterpretations <- function(vecA, vecC) {
   #appropriate amount of blank sides.
   aBlanks = list(c(0), c(0), c(0), c(0), c(0), c(0))
   cBlanks = list(c(0), c(0), c(0), c(0), c(0), c(0))#eventuell NULL setzen
-  consituents <- vector(mode = "list", length = 0)
   constituents <<- NULL
   numberOfConceiledSides <- (6 - length(vecA))
   
@@ -769,9 +766,12 @@ calculateInterpretations <- function(vecA, vecC) {
     }
   }
   }
-  AC<- (tempAC + aBlanks[[1]]*cBlanks[[1]] + (1-aBlanks[[2]])*(1-cBlanks[[2]])
-        + (1-aBlanks[[3]])*(1 - cBlanks[[3]]) + (1-aBlanks[[4]])*(1-cBlanks[[4]]) 
-        + (1-aBlanks[[5]])*(1-cBlanks[[5]])  + (1-aBlanks[[6]])*(1-cBlanks[[6]]))
+
+  
+  AC<- (tempAC + aBlanks[[1]]*cBlanks[[1]] + aBlanks[[2]]*cBlanks[[2]]
+        + aBlanks[[3]]*cBlanks[[3]] + aBlanks[[4]]*cBlanks[[4]] 
+        + aBlanks[[5]]*cBlanks[[5]]  + aBlanks[[6]]*cBlanks[[6]])
+  
   tempnAnC <- 0
   if(length(vecA)>0){
     for (i in 1 : length(vecA)){
@@ -780,9 +780,9 @@ calculateInterpretations <- function(vecA, vecC) {
       }
     }
   }
-  nAnC <- (tempnAnC + (1-aBlanks[[1]])*(1-cBlanks[[1]]) + aBlanks[[2]]*cBlanks[[2]]
-           + aBlanks[[3]]*cBlanks[[3]] + aBlanks[[4]]*cBlanks[[4]] 
-           + aBlanks[[5]]*cBlanks[[5]]  + aBlanks[[6]]*cBlanks[[6]])
+  nAnC <- (tempnAnC + (1-aBlanks[[1]])*(1-cBlanks[[1]]) + (1-aBlanks[[2]])*(1-cBlanks[[2]])
+           + (1-aBlanks[[3]])*(1-cBlanks[[3]]) + (1-aBlanks[[4]])*(1-cBlanks[[4]])
+           + (1-aBlanks[[5]])*(1-cBlanks[[5]])  + (1-aBlanks[[6]])*(1-cBlanks[[6]]))
   
   CnA <- C - AC
   AnC <- A - AC
@@ -790,11 +790,11 @@ calculateInterpretations <- function(vecA, vecC) {
   #Calculates delta P, substituting 0 for undefined values resulting from 
   #division by 0
   materialConditional <- ((AC + CnA + nAnC)/6) #continue later
-  print(summary(cbind(materialConditional)))
+ 
   equivalent <- ((AC + nAnC)/6)
-  print(summary(cbind(equivalent)))
+ 
   conjunction <- (AC/6)
-  print(summary(cbind(conjunction)))
+ 
   
   pCgA<-AC/A
   for (i in 1 : length(pCgA)){
@@ -811,22 +811,27 @@ calculateInterpretations <- function(vecA, vecC) {
   deltaP<-pCgA-pCgnA
   
   #-----------------------------------------------------------------------------
-  #print and return our results
-  print(summary(cbind(materialConditional)))
-  print(summary(cbind(equivalent)))
-  print(summary(cbind(conjunction)))
-  print(length(deltaP))
+  #prints the results
+  print(paste('The --> interpretation has as its minimum:', min(materialConditional),
+        'and as its maximum:', max(materialConditional), '.'))
   
+  print(paste('The <--> interpretation has as its minimum:', min(equivalent),
+      'and as its maximum:', max(equivalent), '.'))
   
+  print(paste('The conjunction interpretation has as its minimum:', min(conjunction),
+      'and as its maximum:', max(conjunction), '.'))
   
-  return(summary(cbind(deltaP))) #returns the summary of the delta P column
+  print(summary(cbind(deltaP)))
+  
 }
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 # TESTING THE SUBROUTINES
 
-vectorA <- logical() 
-vectorC <- logical() 
+#vectorA <- logical() #for empty boolean vectors
+#vectorC <- logical() #for emtpy boolean vectors
+vectorA <- c(T,T,T,T,T)
+vectorC <- c(T,T,T,T,T)
 calculateDeltaP(vectorA, vectorC)
 calculateInterpretations(vectorA, vectorC)
 
