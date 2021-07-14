@@ -805,9 +805,20 @@ calculateInterpretations <- function(vecA, vecC) {
   }
   deltaP<-pCgA-pCgnA
   
+  #-----------------------------------------------------------------------------
+  #print and return our results
+  print(summary(cbind(materialConditional)))
+  print(summary(cbind(equivalent)))
+  print(summary(cbind(conjunction)))
   print(length(deltaP))
+  
+  
+  
   return(summary(cbind(deltaP))) #returns the summary of the delta P column
 }
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+# TESTING THE SUBROUTINES
 
 vectorA <- c(F,F,F,F)
 vectorC <- c(F,F,F,F)
