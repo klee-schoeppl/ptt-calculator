@@ -72,7 +72,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   }
   }
 
-  
+  #AC is the count of sides with both A and C
   AC<- (tempAC + aBlanks[[1]]*cBlanks[[1]] + aBlanks[[2]]*cBlanks[[2]]
         + aBlanks[[3]]*cBlanks[[3]] + aBlanks[[4]]*cBlanks[[4]] 
         + aBlanks[[5]]*cBlanks[[5]]  + aBlanks[[6]]*cBlanks[[6]])
@@ -86,6 +86,7 @@ analyzeDiceTask <- function(vecA, vecC) {
     }
   }
 
+  #nAnC is the count of sides with both ¬A and ¬C
   nAnC <- tempnAnC 
            
   
@@ -93,34 +94,28 @@ analyzeDiceTask <- function(vecA, vecC) {
     nAnC <- nAnC + ((1-aBlanks[[i]])*(1-cBlanks[[i]]))/2 
     
   }
-           
-          # + ((1-aBlanks[[2]])*(1-cBlanks[[2]]))/2
-           #+ ((1-aBlanks[[3]])*(1-cBlanks[[3]]))/2 
-           #+ ((1-aBlanks[[4]])*(1-cBlanks[[4]]))/2 
-           #+ ((1-aBlanks[[5]])*(1-cBlanks[[5]]))/2 
-           #+ ((1-aBlanks[[6]])*(1-cBlanks[[6]]))/2 
-           #)
-  
+       
   CnA <- C - AC
   AnC <- A - AC
-  print(nAnC)
   #-----------------------------------------------------------------------------
   #Calculates delta P, substituting 0 for undefined values resulting from 
   #division by 0
-  materialConditional <- ((AC + CnA + nAnC)/6) #continue later
- 
-  
-  
-  equivalent <- ((AC / 6 + nAnC / 6)) #continue later
-  
-  
-  
+  materialConditional <- ((AC + CnA + nAnC)/6) # -> interpretation
+  equivalent <- ((AC / 6 + nAnC / 6)) # <--> interpretation
   conjunction <- AC/6
+  conditionalP <- AC / A # | interpretation
+  for (i in 1 : length(conditionalP)){
+    if (is.na(conditionalP[i])){
+      conditionalP[i]<-c(0)
+    }
+  }
+  biconditionalP <- AC / (6 - nAnC) # || interpretation
+  for (i in 1 : length(biconditionalP)){
+    if (is.na(biconditionalP[i])){
+      biconditionalP[i]<-c(0)
+    }
+  }
  
-  
-  
- 
-  
   pCgA<-AC/A
   for (i in 1 : length(pCgA)){
     if (is.na(pCgA[i])){
@@ -137,7 +132,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   #-----------------------------------------------------------------------------
   #prints the results
-  print(paste('The --> interpretation has as its minimum:', min(materialConditional),
+  print(paste('The -> interpretation has as its minimum:', min(materialConditional),
         'and as its maximum:', max(materialConditional), '.'))
   
   print(paste('The <--> interpretation has as its minimum:', min(equivalent),
@@ -145,6 +140,13 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   print(paste('The conjunction interpretation has as its minimum:', min(conjunction),
       'and as its maximum:', max(conjunction),'.'))
+  
+  print(paste('The conditional probability interpretation has as its minimum:', 
+              min(conditionalP), 'and as its maximum:', max(conditionalP),'.'))
+  
+  print(paste('The probability of the biconditional event interpretation has as its minimum:', 
+              min(biconditionalP),
+              'and as its maximum:', max(biconditionalP),'.'))
   
   print(summary(cbind(deltaP)))
   
