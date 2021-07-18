@@ -39,7 +39,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   #Vectors shorter than 6 values are taken to be uncertainty tasks with an 
   #appropriate amount of blank sides.
   aBlanks = list(c(0), c(0), c(0), c(0), c(0), c(0))
-  cBlanks = list(c(0), c(0), c(0), c(0), c(0), c(0))#eventuell NULL setzen
+  cBlanks = list(c(0), c(0), c(0), c(0), c(0), c(0))
   constituents <<- NULL
   numberOfConceiledSides <- (6 - length(vecA))
   
@@ -57,13 +57,18 @@ analyzeDiceTask <- function(vecA, vecC) {
   #-----------------------------------------------------------------------------
   #Reads out the inputs and (if applicable) the arrays containing the variables
   #for blank sides. 
+  
   A <- (sum(vecA) + aBlanks[[1]] + aBlanks[[2]] + aBlanks[[3]] + aBlanks[[4]] 
         + aBlanks[[5]] + aBlanks[[6]]) #irrelevant values equal 0
   C <- (sum(vecC) + cBlanks[[1]] + cBlanks[[2]] + cBlanks[[3]] + cBlanks[[4]] 
         + cBlanks[[5]] + cBlanks[[6]]) #irrelevant values equal 0
-  nA<- 6 - A
-  nC<- 6 - C
-  tempAC <- 0
+  
+  nA<- 6 - A # count of ¬A sides
+  nC<- 6 - C # count of ¬C sides
+  tempA <- sum(vecA) #ignoring the blank sides
+  tempC <- sum(vecC) #ignoring the blank sides
+
+  tempAC <- 0 #ignoring the blank sides
   if (length(vecA)>0){
   for (i in 1 : length(vecA)){
     if (vecA[i] & vecC[i]){
@@ -77,7 +82,7 @@ analyzeDiceTask <- function(vecA, vecC) {
         + aBlanks[[3]]*cBlanks[[3]] + aBlanks[[4]]*cBlanks[[4]] 
         + aBlanks[[5]]*cBlanks[[5]]  + aBlanks[[6]]*cBlanks[[6]])
   
-  tempnAnC <- 0
+  tempnAnC <- 0 #ignoring the blank sides
   if(length(vecA)>0){
     for (i in 1 : length(vecA)){
       if (!vecA[i] & !vecC[i]){
@@ -89,11 +94,10 @@ analyzeDiceTask <- function(vecA, vecC) {
   #nAnC is the count of sides with both ¬A and ¬C
   nAnC <- tempnAnC 
            
-  
+  if (numberOfConceiledSides > 0){
   for (i in 1 : numberOfConceiledSides){
     nAnC <- nAnC + ((1-aBlanks[[i]])*(1-cBlanks[[i]]))/2 
-    
-  }
+  }}
        
   CnA <- C - AC
   AnC <- A - AC
@@ -115,6 +119,8 @@ analyzeDiceTask <- function(vecA, vecC) {
       biconditionalP[i]<-c(0)
     }
   }
+  
+  fullignoreConditionalP <- tempAC / tempA # | interpretation without blanks
  
   pCgA<-AC/A
   for (i in 1 : length(pCgA)){
@@ -132,6 +138,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   #-----------------------------------------------------------------------------
   #prints the results
+  
   print(paste('The -> interpretation has as its minimum:', min(materialConditional),
         'and as its maximum:', max(materialConditional), '.'))
   
@@ -148,6 +155,15 @@ analyzeDiceTask <- function(vecA, vecC) {
               min(biconditionalP),
               'and as its maximum:', max(biconditionalP),'.'))
   
+  print(paste('The |-upper-ignored interpretation has as its minimum:', min(conditionalP)
+              , 'and as its maximum:', max(fullignoreConditionalP),'.'))
+  
+  print(paste('The |-lower-ignored interpretation has as its minimum:', min(fullignoreConditionalP)
+              , 'and as its maximum:', max(conditionalP),'.'))
+  
+  print(paste('The |-full-ignored interpretation has as its minimum:', min(fullignoreConditionalP)
+              , 'and as its maximum:', max(fullignoreConditionalP),'.'))
+  
   print(summary(cbind(deltaP)))
   
 }
@@ -157,8 +173,8 @@ analyzeDiceTask <- function(vecA, vecC) {
 
 #vectorA <- logical() #for empty boolean vectors
 #vectorC <- logical() #for emtpy boolean vectors
-vectorA <- c(T,F,F)
-vectorC <- c(F,F,F)
+vectorA <- c(T,T,T,F)
+vectorC <- c(T,T,F,T)
 analyzeDiceTask(vectorA, vectorC)
 
 
