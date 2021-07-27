@@ -4,16 +4,12 @@ install.packages("rapportools")
 
 library(readxl) #import data from .xls files
 library(tidyverse) #Data analysis
-library(magrittr) # gives us the %>% function
 library(dplyr) #Gives us the mutate function
-library(ggplot2)
 library(xtable) #outputs tables as LaTeX code
 library(rapportools)
 
 analyzeDiceTask <- function(vecA, vecC) {
-  #Expects as input 2 equal length vectors containing 6 or fewer boolean values 
-  #each. VecA should contain whether the side in question makes the 
-  #antecedent of the conditional true, VecC the conditional. 
+  # checking that the input constitutes a diceTask
   
   if (!is.vector(vecA) |!is.vector(vecC)){
     stop('Invalid input: Expected 2 vectors.')
@@ -120,13 +116,15 @@ analyzeDiceTask <- function(vecA, vecC) {
   # Calculates the uncertainty intervals for a wide range of interpretations of
   # the natural language conditionals used in the experiments. 
   # Substitution of 0 for undefined values resulting from division by 0.
-  
+ 
   # -> interpretation
   materialConditional <- ((AC + CnA + nAnC)/6) 
   
+  
+  
   # <--> interpretation
   equivalent <- ((AC / 6 + nAnC / 6)) 
-  
+ 
   # & interpretation
   conjunction <- AC/6
   
@@ -153,49 +151,54 @@ analyzeDiceTask <- function(vecA, vecC) {
   #Calculates various interpretations of argument strength, among them delta P.
   
   
-  deltaP<-pCgA-pCgnA
+  deltaP<-pCgA-pCgnA # Nozick 1981
   
   #-----------------------------------------------------------------------------
   #prints the results
   
+  interpretationTable = data.frame(
+    interpretation = c("-->",
+                       "<->",
+                       "&",
+                       "|",
+                       "||",
+                       "|u",
+                       "|l",
+                       "|ul"),
+    min = c(min(materialConditional),
+            min(equivalent),
+            min(conjunction),
+            min(conditionalP),
+            min(biconditionalP),
+            min(conditionalP),
+            min(fullignoreConditionalP),
+            min(fullignoreConditionalP)),
+    max = c(max(materialConditional),
+            max(equivalent),
+            max(conjunction),
+            max(conditionalP),
+            max(biconditionalP),
+            max(fullignoreConditionalP),
+            max(conditionalP),
+            max(fullignoreConditionalP)),
+    stringsAsFactors = FALSE
+  )
   
-  
-  print(paste('The -> interpretation has as its minimum:', min(materialConditional),
-        'and as its maximum:', max(materialConditional), '.'))
-  
-  print(paste('The <--> interpretation has as its minimum:', min(equivalent),
-      'and as its maximum:', max(equivalent),'.'))
-  
-  print(paste('The conjunction interpretation has as its minimum:', min(conjunction),
-      'and as its maximum:', max(conjunction),'.'))
-  
-  print(paste('The conditional probability interpretation has as its minimum:', 
-              min(conditionalP), 'and as its maximum:', max(conditionalP),'.'))
-  
-  print(paste('The probability of the biconditional event interpretation has as its minimum:', 
-              min(biconditionalP),
-              'and as its maximum:', max(biconditionalP),'.'))
-  
-  print(paste('The |-upper-ignored interpretation has as its minimum:', min(conditionalP)
-              , 'and as its maximum:', max(fullignoreConditionalP),'.'))
-  
-  print(paste('The |-lower-ignored interpretation has as its minimum:', min(fullignoreConditionalP)
-              , 'and as its maximum:', max(conditionalP),'.'))
-  
-  print(paste('The |-full-ignored interpretation has as its minimum:', min(fullignoreConditionalP)
-              , 'and as its maximum:', max(fullignoreConditionalP),'.'))
+  print(interpretationTable)
   
   print(summary(cbind(deltaP)))
   
 }
 #-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-# TESTING THE SUBROUTINES
+# TESTING THE SUBROUTINE
+# Expects as input 2 equal length vectors containing 6 or fewer boolean values 
+# each. VecA should contain whether the side in question makes the 
+# antecedent of the conditional true, VecC the conditional. 
 
-vectorA <- logical() #for empty boolean vectors
-vectorC <- logical() #for emtpy boolean vectors
-#vectorA <- c(T,T,T,F)
-#vectorC <- c(T,T,F,T)
+#vectorA <- logical() #for empty boolean vectors
+#vectorC <- logical() #for emtpy boolean vectors
+vectorA <- c(T,T,T,F)
+vectorC <- c(T,T,F,T)
 analyzeDiceTask(vectorA, vectorC)
 
 
