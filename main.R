@@ -150,8 +150,17 @@ analyzeDiceTask <- function(vecA, vecC) {
   #-----------------------------------------------------------------------------
   #Calculates various interpretations of argument strength, among them delta P.
   
+  # Nozick, 1981 (also 'delta P')
+  deltaP<-pCgA-pCgnA 
   
-  deltaP<-pCgA-pCgnA # Nozick 1981
+  # Kemeny & Oppenheim, 1952
+  kemeny<-(pCgA-pCgnA)/(pCgA+pCgnA) 
+  for (i in 1 : length(kemeny)){
+    if (is.na(kemeny[i])){
+      kemeny[i]<-c(0)
+    }
+  }
+  
   
   #-----------------------------------------------------------------------------
   #prints the results
@@ -186,7 +195,21 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   print(interpretationTable)
   
-  print(summary(cbind(deltaP)))
+  relevancyTable = data.frame(
+    notion = c("deltaP/ Nozick",
+                       "Kemeny & Oppenheim"),
+    min = c(min(deltaP),
+            min(kemeny)),
+    max = c(max(deltaP),
+            max(kemeny)),
+    mean = c(mean(deltaP),
+            mean(kemeny)),
+    median = c(median(deltaP),
+            median(kemeny)),
+    stringsAsFactors = FALSE
+  )
+  
+  print(relevancyTable)
   
 }
 #-------------------------------------------------------------------------------
