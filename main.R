@@ -10,17 +10,13 @@ library(ggplot2)
 library(xtable) #outputs tables as LaTeX code
 library(rapportools)
 
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-# TRYING MY HANDS AT A SUBROUTINE FOR THE INTERPRETATIONS
-
 analyzeDiceTask <- function(vecA, vecC) {
   #Expects as input 2 equal length vectors containing 6 or fewer boolean values 
   #each. VecA should contain whether the side in question makes the 
   #antecedent of the conditional true, VecC the conditional. 
   
   if (!is.vector(vecA) |!is.vector(vecC)){
-    stop('Invalid input: Expected 2 vectors')
+    stop('Invalid input: Expected 2 vectors.')
   }
   if (length(vecA)!= length(vecC)){
     stop('Invalid input: Unequal vector length.')
@@ -74,7 +70,7 @@ analyzeDiceTask <- function(vecA, vecC) {
     if (vecA[i] & vecC[i]){
       tempAC <- tempAC + 1
     }
-  }
+   }
   }
 
   #AC is the count of sides with both A and C
@@ -91,53 +87,78 @@ analyzeDiceTask <- function(vecA, vecC) {
     }
   }
 
-  #nAnC is the count of sides with both ¬A and ¬C
+  # nAnC is the count of sides with both ¬A and ¬C
   nAnC <- tempnAnC 
-           
   if (numberOfConceiledSides > 0){
   for (i in 1 : numberOfConceiledSides){
     nAnC <- nAnC + ((1-aBlanks[[i]])*(1-cBlanks[[i]]))/2 
   }}
-       
+    
+  # CnA is the count of sides with C but ¬A
   CnA <- C - AC
+  # AnC is the count of sides with A but ¬C
   AnC <- A - AC
-  #-----------------------------------------------------------------------------
-  #Calculates delta P, substituting 0 for undefined values resulting from 
-  #division by 0
-  materialConditional <- ((AC + CnA + nAnC)/6) # -> interpretation
-  equivalent <- ((AC / 6 + nAnC / 6)) # <--> interpretation
-  conjunction <- AC/6
-  conditionalP <- AC / A # | interpretation
-  for (i in 1 : length(conditionalP)){
-    if (is.na(conditionalP[i])){
-      conditionalP[i]<-c(0)
-    }
-  }
-  biconditionalP <- AC / (6 - nAnC) # || interpretation
-  for (i in 1 : length(biconditionalP)){
-    if (is.na(biconditionalP[i])){
-      biconditionalP[i]<-c(0)
-    }
-  }
   
-  fullignoreConditionalP <- tempAC / tempA # | interpretation without blanks
- 
+  # pCgA is the probability of C given A
   pCgA<-AC/A
   for (i in 1 : length(pCgA)){
     if (is.na(pCgA[i])){
       pCgA[i]<-c(0)
     }
   }
+  
+  # pCgnA is the probability of C given ¬A
   pCgnA<-CnA/nA
   for (i in 1 : length(pCgnA)){
     if (is.na(pCgnA[i])){
       pCgnA[i]<-c(0)
     }
   }
+  
+
+  #-----------------------------------------------------------------------------
+  # Calculates the uncertainty intervals for a wide range of interpretations of
+  # the natural language conditionals used in the experiments. 
+  # Substitution of 0 for undefined values resulting from division by 0.
+  
+  # -> interpretation
+  materialConditional <- ((AC + CnA + nAnC)/6) 
+  
+  # <--> interpretation
+  equivalent <- ((AC / 6 + nAnC / 6)) 
+  
+  # & interpretation
+  conjunction <- AC/6
+  
+  # | interpretation
+  conditionalP <- pCgA
+  
+  # || interpretation
+  biconditionalP <- AC / (6 - nAnC) 
+  for (i in 1 : length(biconditionalP)){
+    if (is.na(biconditionalP[i])){
+      biconditionalP[i]<-c(0)
+    }
+  }
+  
+  # 'halfway' | interpretation
+  fullignoreConditionalP <- tempAC / tempA # without blanks
+  for (i in 1 : length( fullignoreConditionalP)){
+    if (is.na( fullignoreConditionalP[i])){
+      fullignoreConditionalP[i]<-c(0)
+    }
+  }
+  
+  #-----------------------------------------------------------------------------
+  #Calculates various interpretations of argument strength, among them delta P.
+  
+  
   deltaP<-pCgA-pCgnA
   
   #-----------------------------------------------------------------------------
   #prints the results
+  
+  
   
   print(paste('The -> interpretation has as its minimum:', min(materialConditional),
         'and as its maximum:', max(materialConditional), '.'))
@@ -171,10 +192,10 @@ analyzeDiceTask <- function(vecA, vecC) {
 #-------------------------------------------------------------------------------
 # TESTING THE SUBROUTINES
 
-#vectorA <- logical() #for empty boolean vectors
-#vectorC <- logical() #for emtpy boolean vectors
-vectorA <- c(T,T,T,F)
-vectorC <- c(T,T,F,T)
+vectorA <- logical() #for empty boolean vectors
+vectorC <- logical() #for emtpy boolean vectors
+#vectorA <- c(T,T,T,F)
+#vectorC <- c(T,T,F,T)
 analyzeDiceTask(vectorA, vectorC)
 
 
