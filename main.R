@@ -111,6 +111,29 @@ analyzeDiceTask <- function(vecA, vecC) {
     }
   }
   
+  # pAgC is the probability of A given C
+  pAgC <- AC/C
+  for (i in 1 : length(pAgC)){
+    if (is.na(pAgC[i])){
+      pAgC[i]<-c(0)
+    }
+  }
+  
+  # pAgnC is the probability of A given ¬C
+  pAgnC <- AnC/nC
+  for (i in 1 : length(pAgnC)){
+    if (is.na(pAgnC[i])){
+      pAgnC[i]<-c(0)
+    }
+  }
+  
+  # pnCgA is the probability of ¬C given A
+  pnCgA <- AnC/A
+  for (i in 1 : length(pnCgA)){
+    if (is.na(pnCgA[i])){
+      pnCgA[i]<-c(0)
+    }
+  }
 
   #-----------------------------------------------------------------------------
   # Calculates the uncertainty intervals for a wide range of interpretations of
@@ -119,8 +142,6 @@ analyzeDiceTask <- function(vecA, vecC) {
  
   # -> interpretation
   materialConditional <- ((AC + CnA + nAnC)/6) 
-  
-  
   
   # <--> interpretation
   equivalent <- ((AC / 6 + nAnC / 6)) 
@@ -148,9 +169,12 @@ analyzeDiceTask <- function(vecA, vecC) {
   }
   
   #-----------------------------------------------------------------------------
-  #Calculates various interpretations of argument strength, among them delta P.
+  #Calculates various measures of confirmation, among them delta P.
   
-  # Nozick, 1981 (also 'delta P')
+  # Nozick, 1981 
+  nozick<-pAgC -pAgnC
+  
+  #Christensen, 1999 (also 'delta P')
   deltaP<-pCgA-pCgnA 
   
   # Kemeny & Oppenheim, 1952
@@ -161,6 +185,27 @@ analyzeDiceTask <- function(vecA, vecC) {
     }
   }
   
+  # Finch, 1960
+  finch<- (pCgA/(C/6))
+  for (i in 1 : length(finch)){
+    if (is.na(finch[i])){
+      finch[i]<-c(0)
+    }
+  }
+  finch <- finch - 1
+  
+  # Rips, 2001
+  rips<-pnCgA/(nC/6)
+  rips<- 1-rips
+  
+  #Carnap, 1962 1/2
+  carnap1<- pCgA - C/6
+  
+  # Carnap, 1962 2/2
+  carnap2<-(AC/6)-(A/6 * C/6)
+  
+  # Mortimer, 1988
+  mortimer<- pAgC - A/6
   
   #-----------------------------------------------------------------------------
   #prints the results
@@ -195,21 +240,51 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   print(interpretationTable)
   
-  relevancyTable = data.frame(
-    notion = c("deltaP/ Nozick",
-                       "Kemeny & Oppenheim"),
+  consequenceNotionTable = data.frame(
+    consequenceNotion = c("deltaP/ Christensen",
+                       "Kemeny & Oppenheim",
+                       "Carnap 1",
+                       "Carnap 2",
+                       "Nozick",
+                       "Mortimer",
+                       "Finch",
+                       "Rips"),
     min = c(min(deltaP),
-            min(kemeny)),
+            min(kemeny),
+            min(carnap1),
+            min(carnap2),
+            min(nozick),
+            min(mortimer),
+            min(finch),
+            min(rips)),
     max = c(max(deltaP),
-            max(kemeny)),
+            max(kemeny),
+            max(carnap1),
+            max(carnap2),
+            max(nozick),
+            max(mortimer),
+            max(finch),
+            max(rips)),
     mean = c(mean(deltaP),
-            mean(kemeny)),
+            mean(kemeny),
+            mean(carnap1),
+            mean(carnap2),
+            mean(nozick),
+            mean(mortimer),
+            mean(finch),
+            mean(rips)),
     median = c(median(deltaP),
-            median(kemeny)),
+            median(kemeny),
+            median(carnap1),
+            median(carnap2),
+            median(nozick),
+            median(mortimer),
+            median(finch),
+            median(rips)),
     stringsAsFactors = FALSE
   )
   
-  print(relevancyTable)
+  print(consequenceNotionTable)
   
 }
 #-------------------------------------------------------------------------------
