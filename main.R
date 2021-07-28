@@ -92,8 +92,10 @@ analyzeDiceTask <- function(vecA, vecC) {
     
   # CnA is the count of sides with C but ¬A
   CnA <- C - AC
+  tempCnA <- tempC - tempAC
   # AnC is the count of sides with A but ¬C
   AnC <- A - AC
+  tempAnC <- tempA - tempAC
   
   # pCgA is the probability of C given A
   pCgA<-AC/A
@@ -140,11 +142,17 @@ analyzeDiceTask <- function(vecA, vecC) {
   # the natural language conditionals used in the experiments. 
   # Substitution of 0 for undefined values resulting from division by 0.
  
-  # -> interpretation
+  # --> interpretation
   materialConditional <- ((AC + CnA + nAnC)/6) 
   
-  # <--> interpretation
-  equivalent <- ((AC / 6 + nAnC / 6)) 
+  # 'halfway' --> interpretation
+  fullignoreMaterialConditional <- ((tempAC + tempCnA + tempnAnC)/ 6)
+  
+  # <-> interpretation
+  equivalent <- (AC / 6 + nAnC / 6)
+  
+  # 'halfway' <-> interpretation
+  fullignoreEquivalent <- tempAC/6 + tempnAnC/6
  
   # & interpretation
   conjunction <- AC/6
@@ -172,10 +180,10 @@ analyzeDiceTask <- function(vecA, vecC) {
   }
   
   # 'halfway' || interpretation
-  fullignoredBiconditionalP <- tempAC / (6 - tempnAnC)
-  for (i in 1 : length(fullignoredBiconditionalP)){
-    if (is.na(fullignoredBiconditionalP[i])){
-      fullignoredBiconditionalP[i]<-c(0)
+  fullignoreBiconditionalP <- tempAC / (6 - tempnAnC)
+  for (i in 1 : length(fullignoreBiconditionalP)){
+    if (is.na(fullignoreBiconditionalP[i])){
+      fullignoreBiconditionalP[i]<-c(0)
     }
   }
   
@@ -235,7 +243,13 @@ analyzeDiceTask <- function(vecA, vecC) {
                        "&ul",
                        "||u",
                        "||l",
-                       "||ul"),
+                       "||ul",
+                       "-->u",
+                       "-->l",
+                       "-->ul",
+                       "<->u",
+                       "<->l",
+                       "<->ul"),
     min = c(min(materialConditional),
             min(equivalent),
             min(conjunction),
@@ -248,8 +262,14 @@ analyzeDiceTask <- function(vecA, vecC) {
             min(fullignoreConjunction),
             min(fullignoreConjunction),
             min(biconditionalP),
-            min(fullignoredBiconditionalP),
-            min(fullignoredBiconditionalP)),
+            min(fullignoreBiconditionalP),
+            min(fullignoreBiconditionalP),
+            min(materialConditional),
+            min(fullignoreMaterialConditional),
+            min(fullignoreMaterialConditional),
+            min(equivalent),
+            min(fullignoreEquivalent),
+            min(fullignoreEquivalent)),
     max = c(max(materialConditional),
             max(equivalent),
             max(conjunction),
@@ -261,9 +281,15 @@ analyzeDiceTask <- function(vecA, vecC) {
             max(fullignoreConjunction),
             max(conjunction),
             max(fullignoreConjunction),
-            max(fullignoredBiconditionalP),
+            max(fullignoreBiconditionalP),
             max(biconditionalP),
-            max(fullignoredBiconditionalP)),
+            max(fullignoreBiconditionalP),
+            max(fullignoreMaterialConditional),
+            max(materialConditional),
+            max(fullignoreMaterialConditional),
+            max(fullignoreEquivalent),
+            max(equivalent),
+            max(fullignoreEquivalent)),
     stringsAsFactors = FALSE
   )
   
