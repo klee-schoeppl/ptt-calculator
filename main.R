@@ -149,6 +149,9 @@ analyzeDiceTask <- function(vecA, vecC) {
   # & interpretation
   conjunction <- AC/6
   
+  # 'halfway'& interpretation
+  fullignoreConjunction <- tempAC / 6
+  
   # | interpretation
   conditionalP <- pCgA
   
@@ -218,7 +221,10 @@ analyzeDiceTask <- function(vecA, vecC) {
                        "||",
                        "|u",
                        "|l",
-                       "|ul"),
+                       "|ul",
+                       "&u",
+                       "&l",
+                       "&ul"),
     min = c(min(materialConditional),
             min(equivalent),
             min(conjunction),
@@ -226,7 +232,10 @@ analyzeDiceTask <- function(vecA, vecC) {
             min(biconditionalP),
             min(conditionalP),
             min(fullignoreConditionalP),
-            min(fullignoreConditionalP)),
+            min(fullignoreConditionalP),
+            min(conjunction),
+            min(fullignoreConjunction),
+            min(fullignoreConjunction)),
     max = c(max(materialConditional),
             max(equivalent),
             max(conjunction),
@@ -234,7 +243,10 @@ analyzeDiceTask <- function(vecA, vecC) {
             max(biconditionalP),
             max(fullignoreConditionalP),
             max(conditionalP),
-            max(fullignoreConditionalP)),
+            max(fullignoreConditionalP),
+            max(fullignoreConjunction),
+            max(conjunction),
+            max(fullignoreConjunction)),
     stringsAsFactors = FALSE
   )
   
@@ -298,5 +310,3 @@ analyzeDiceTask <- function(vecA, vecC) {
 vectorA <- c(T,T,T,F)
 vectorC <- c(T,T,F,T)
 analyzeDiceTask(vectorA, vectorC)
-
-
