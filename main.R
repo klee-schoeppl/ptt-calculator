@@ -155,6 +155,14 @@ analyzeDiceTask <- function(vecA, vecC) {
   # | interpretation
   conditionalP <- pCgA
   
+  # 'halfway' | interpretation
+  fullignoreConditionalP <- tempAC / tempA # without blanks
+  for (i in 1 : length( fullignoreConditionalP)){
+    if (is.na( fullignoreConditionalP[i])){
+      fullignoreConditionalP[i]<-c(0)
+    }
+  }
+  
   # || interpretation
   biconditionalP <- AC / (6 - nAnC) 
   for (i in 1 : length(biconditionalP)){
@@ -163,11 +171,11 @@ analyzeDiceTask <- function(vecA, vecC) {
     }
   }
   
-  # 'halfway' | interpretation
-  fullignoreConditionalP <- tempAC / tempA # without blanks
-  for (i in 1 : length( fullignoreConditionalP)){
-    if (is.na( fullignoreConditionalP[i])){
-      fullignoreConditionalP[i]<-c(0)
+  # 'halfway' || interpretation
+  fullignoredBiconditionalP <- tempAC / (6 - tempnAnC)
+  for (i in 1 : length(fullignoredBiconditionalP)){
+    if (is.na(fullignoredBiconditionalP[i])){
+      fullignoredBiconditionalP[i]<-c(0)
     }
   }
   
@@ -224,7 +232,10 @@ analyzeDiceTask <- function(vecA, vecC) {
                        "|ul",
                        "&u",
                        "&l",
-                       "&ul"),
+                       "&ul",
+                       "||u",
+                       "||l",
+                       "||ul"),
     min = c(min(materialConditional),
             min(equivalent),
             min(conjunction),
@@ -235,7 +246,10 @@ analyzeDiceTask <- function(vecA, vecC) {
             min(fullignoreConditionalP),
             min(conjunction),
             min(fullignoreConjunction),
-            min(fullignoreConjunction)),
+            min(fullignoreConjunction),
+            min(biconditionalP),
+            min(fullignoredBiconditionalP),
+            min(fullignoredBiconditionalP)),
     max = c(max(materialConditional),
             max(equivalent),
             max(conjunction),
@@ -246,7 +260,10 @@ analyzeDiceTask <- function(vecA, vecC) {
             max(fullignoreConditionalP),
             max(fullignoreConjunction),
             max(conjunction),
-            max(fullignoreConjunction)),
+            max(fullignoreConjunction),
+            max(fullignoredBiconditionalP),
+            max(biconditionalP),
+            max(fullignoredBiconditionalP)),
     stringsAsFactors = FALSE
   )
   
