@@ -1,11 +1,6 @@
-install.packages(c("readxl", "magrittr", "tidyverse", "dplyr"))
-install.packages("xtable")
-install.packages("rapportools")
-
-library(readxl) #import data from .xls files
-library(tidyverse) #Data analysis
-library(dplyr) #Gives us the mutate function
-library(xtable) #outputs tables as LaTeX code
+library(tidyverse)
+library(dplyr)
+library(xtable)
 library(rapportools)
 
 analyzeDiceTask <- function(vecA, vecC) {
@@ -92,10 +87,10 @@ analyzeDiceTask <- function(vecA, vecC) {
     
   # CnA is the count of sides with C but ¬A
   CnA <- C - AC
-  tempCnA <- tempC - tempAC
+  tempCnA <- tempC - tempAC #ignores blanks
   # AnC is the count of sides with A but ¬C
   AnC <- A - AC
-  tempAnC <- tempA - tempAC
+  tempAnC <- tempA - tempAC #ignores blanks
   
   # pCgA is the probability of C given A
   pCgA<-AC/A
@@ -295,6 +290,15 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   print(interpretationTable)
   
+  if(length(vecA)==6){
+    print(
+      paste0("Because this task doesn't feature uncertainty, ",            
+                 "interpretations predict point values instead of intervals ",
+                 "and halfway interpretations trivially overlap with their ",
+                 "main versions.")
+      )
+  }
+  
   consequenceNotionTable = data.frame(
     consequenceNotion = c("deltaP/ Christensen",
                        "Kemeny & Oppenheim",
@@ -350,6 +354,6 @@ analyzeDiceTask <- function(vecA, vecC) {
 
 #vectorA <- logical() #for empty boolean vectors
 #vectorC <- logical() #for emtpy boolean vectors
-vectorA <- c(T,T,T,F)
-vectorC <- c(T,T,F,T)
+vectorA <- c(T,T,T,F,F,F)
+vectorC <- c(T,T,F,T,F,F)
 analyzeDiceTask(vectorA, vectorC)
