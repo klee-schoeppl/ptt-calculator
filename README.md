@@ -4,7 +4,7 @@ Automated analysis of probabilistic truth table tasks for studies on reasoning u
 
 ***
 ### Dice Task Subroutine
-Dice tasks constitute that subset of probabilistic truth table tasks which is restricted to 6 sides of a die, each featuring one of two symbols and one of two colors. Participants ought to evaluate the probability intervals of conditional sentences like: "If the side facing up shows *antecedent*, then the side shows *consequent*.".
+Dice tasks constitute that subset of probabilistic truth table tasks which is restricted to 6 sides of a die, each featuring one of two symbols and one of two colors. Participants ought to evaluate the probability intervals of conditional sentences like: "If the side facing up shows *antecedent*, then the side shows *consequent*.". Uncertainty is introduced by leaving some sides blank, or marked with a *?*.
 
 This R-subroutine calculates and prints the uncertainty intervals identified by different interpretations of natural language conditionals in dice tasks. In addition, it calculates the connection between antecedent and consequent in terms of different notions of argument strength. The function expects as input two boolean vectors of equal length, representing the color and symbol of each visible side respectively. Vectors shorter than 6 values leave open some uncertainty, leading to probability intervals rather than point values.
 
