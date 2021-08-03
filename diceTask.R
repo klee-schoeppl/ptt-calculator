@@ -45,6 +45,17 @@ analyzeDiceTask <- function(vecA, vecC) {
   #Reads out the inputs and (if applicable) the arrays containing the variables
   #for blank sides. 
   
+  # Substitution of 0 for undefined values resulting from division by 0.
+  replaceNA <- function(column){
+    for (i in 1 : length(column)){
+      if (is.na(column[i]) | is.nan(column[i])){
+        column[i]<-c(0)
+      }
+      
+    }
+    return(column)
+  }
+  
   A <- (sum(vecA) + aBlanks[[1]] + aBlanks[[2]] + aBlanks[[3]] + aBlanks[[4]] 
         + aBlanks[[5]] + aBlanks[[6]]) #irrelevant values equal 0
   C <- (sum(vecC) + cBlanks[[1]] + cBlanks[[2]] + cBlanks[[3]] + cBlanks[[4]] 
@@ -94,49 +105,28 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   # pCgA is the probability of C given A
   pCgA<-AC/A
-  for (i in 1 : length(pCgA)){
-    if (is.na(pCgA[i])){
-      pCgA[i]<-c(0)
-    }
-  }
+  pCgA <-replaceNA(pCgA)
   
   # pCgnA is the probability of C given ¬A
   pCgnA<-CnA/nA
-  for (i in 1 : length(pCgnA)){
-    if (is.na(pCgnA[i])){
-      pCgnA[i]<-c(0)
-    }
-  }
+  pCgnA <- replaceNA(pCgnA)
   
   # pAgC is the probability of A given C
   pAgC <- AC/C
-  for (i in 1 : length(pAgC)){
-    if (is.na(pAgC[i])){
-      pAgC[i]<-c(0)
-    }
-  }
+  pAgC <- replaceNA(pAgC)
   
   # pAgnC is the probability of A given ¬C
   pAgnC <- AnC/nC
-  for (i in 1 : length(pAgnC)){
-    if (is.na(pAgnC[i])){
-      pAgnC[i]<-c(0)
-    }
-  }
+  pAgnC <- replaceNA(pAgnC)
   
   # pnCgA is the probability of ¬C given A
   pnCgA <- AnC/A
-  for (i in 1 : length(pnCgA)){
-    if (is.na(pnCgA[i])){
-      pnCgA[i]<-c(0)
-    }
-  }
+  pnCgA <- replaceNA(pnCgA)
 
   #-----------------------------------------------------------------------------
   # Calculates the uncertainty intervals for a wide range of interpretations of
   # the natural language conditionals used in the experiments. 
-  # Substitution of 0 for undefined values resulting from division by 0.
- 
+  
   # --> interpretation
   materialConditional <- ((AC + CnA + nAnC)/6) 
   
@@ -160,27 +150,15 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   # 'halfway' | interpretation
   fullignoreConditionalP <- tempAC / tempA # without blanks
-  for (i in 1 : length( fullignoreConditionalP)){
-    if (is.na( fullignoreConditionalP[i])){
-      fullignoreConditionalP[i]<-c(0)
-    }
-  }
+  fullignoreConditionalP<-replaceNA(fullignoreConditionalP)
   
   # || interpretation
   biconditionalP <- AC / (6 - nAnC) 
-  for (i in 1 : length(biconditionalP)){
-    if (is.na(biconditionalP[i])){
-      biconditionalP[i]<-c(0)
-    }
-  }
+  biconditionalP<-replaceNA(biconditionalP)
   
   # 'halfway' || interpretation
   fullignoreBiconditionalP <- tempAC / (6 - tempnAnC)
-  for (i in 1 : length(fullignoreBiconditionalP)){
-    if (is.na(fullignoreBiconditionalP[i])){
-      fullignoreBiconditionalP[i]<-c(0)
-    }
-  }
+  fullignoreBiconditionalP<-replaceNA(fullignoreBiconditionalP)
   
   #-----------------------------------------------------------------------------
   #Calculates various measures of confirmation, among them delta P.
@@ -193,25 +171,18 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   # Kemeny & Oppenheim, 1952
   kemeny<-(pAgC-pAgnC)/(pAgC+pAgnC) 
-  for (i in 1 : length(kemeny)){
-    if (is.na(kemeny[i])){
-      kemeny[i]<-c(0)
-    }
-  }
+  kemeny<-replaceNA(kemeny)
   
   # Finch, 1960
   finch<- (pCgA/(C/6))
-  for (i in 1 : length(finch)){
-    if (is.na(finch[i])){
-      finch[i]<-c(0)
-    }
-  }
+  finch<-replaceNA(finch)
   finch <- finch - 1
   
   # Rips, 2001
   rips<-pnCgA/(nC/6)
+  rips<-replaceNA(rips)
   rips<- 1-rips
-  
+
   #Carnap, 1962 1/2
   carnap1<- pCgA - C/6
   
@@ -287,7 +258,6 @@ analyzeDiceTask <- function(vecA, vecC) {
             max(fullignoreEquivalent)),
     stringsAsFactors = FALSE
   )
-  
   print(interpretationTable)
   
   if(length(vecA)==6){
@@ -342,18 +312,15 @@ analyzeDiceTask <- function(vecA, vecC) {
             median(rips)),
     stringsAsFactors = FALSE
   )
-  
   print(consequenceNotionTable)
-  
 }
 #-------------------------------------------------------------------------------
-# TESTING THE SUBROUTINE
+# USAGE:
 # Expects as input 2 equal length vectors containing 6 or fewer boolean values 
 # each. VecA should contain whether the side in question makes the 
 # antecedent of the conditional true, VecC the conditional. 
+#for empty boolean vectors use <- logical()
 
-#vectorA <- logical() #for empty boolean vectors
-#vectorC <- logical() #for emtpy boolean vectors
-vectorA <- c(T,F,F,T)
-vectorC <- c(F,F,T,T)
+vectorA <- c(F,F,F,F)
+vectorC <- c(F,F,F,F)
 analyzeDiceTask(vectorA, vectorC)
