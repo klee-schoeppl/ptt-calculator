@@ -1,6 +1,6 @@
 ## PTT-Calculator
 
-Automated analysis of probabilistic truth table tasks for studies on reasoning under uncertainty. Written as research assistant on BMBF project <01UL1906X> of Dr.Dr. Niki Pfeifer. At this point, only so-called dice tasks - see the next section - have been implemented, but more general analysis is planned.
+Automated analysis of probabilistic truth-table tasks for studies on reasoning under uncertainty. Written as research assistant on BMBF project <01UL1906X> of Dr.Dr. Niki Pfeifer. At this point, only so-called dice tasks - see the next section - have been implemented, but more general analysis is planned.
 
 ***
 ### Dice Task Subroutine
