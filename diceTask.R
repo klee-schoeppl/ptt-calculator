@@ -1,11 +1,9 @@
-library(tidyverse)
-library(dplyr)
-library(xtable)
-library(rapportools)
-
 analyzeDiceTask <- function(vecA, vecC) {
+  library(tidyverse)
+  library(dplyr)
+  library(rapportools)
+  ------------------------------------------------------------------------------
   # checking that the input constitutes a diceTask
-  
   if (!is.vector(vecA) |!is.vector(vecC)){
     stop('Invalid input: Expected 2 vectors.')
   }
@@ -21,7 +19,6 @@ analyzeDiceTask <- function(vecA, vecC) {
   if (length(vecA)>6){
     stop('Invalid input: Vectors contain too many values.')
   }
-  
   #-----------------------------------------------------------------------------
   #Vectors shorter than 6 values are taken to be uncertainty tasks with an 
   #appropriate amount of blank sides.
@@ -42,20 +39,18 @@ analyzeDiceTask <- function(vecA, vecC) {
     }
   }
   #-----------------------------------------------------------------------------
-  #Reads out the inputs and (if applicable) the arrays containing the variables
-  #for blank sides. 
-  
-  # Substitution of 0 for undefined values resulting from division by 0.
+  # function substituting 0 for undefined values resulting from division by 0.
   replaceNA <- function(column){
     for (i in 1 : length(column)){
       if (is.na(column[i]) | is.nan(column[i])){
         column[i]<-c(0)
       }
-      
     }
     return(column)
   }
-  
+  #-----------------------------------------------------------------------------
+  #Reads out the inputs and (if applicable) the arrays containing the variables
+  #for blank sides. 
   A <- (sum(vecA) + aBlanks[[1]] + aBlanks[[2]] + aBlanks[[3]] + aBlanks[[4]] 
         + aBlanks[[5]] + aBlanks[[6]]) #irrelevant values equal 0
   C <- (sum(vecC) + cBlanks[[1]] + cBlanks[[2]] + cBlanks[[3]] + cBlanks[[4]] 
@@ -314,6 +309,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   )
   print(consequenceNotionTable)
 }
+#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 # USAGE:
 # Expects as input 2 equal length vectors containing 6 or fewer boolean values 
