@@ -1,5 +1,5 @@
 # Dice Task Calculator
-Automated analysis of dice tasks for studies on reasoning under uncertainty. Written as research assistant on BMBF project &lt;01UL1906X> "Logic and philosophy of science of reasoning under uncertainty".
+Automated analysis of dice tasks for studies on reasoning under uncertainty. Written as research assistant on BMBF project &lt;01UL1906X> of Dr.Dr. Niki Pfeifer "Logic and philosophy of science of reasoning under uncertainty".
 
 This R-subroutine calculates and prints the uncertainty intervals identified by different interpretations of natural language conditionals in dice tasks. In addition, it calculates the connection between antecedent and consequent in terms of different notions of argument strength. The function expects as input two boolean vectors of equal length, representing the color and symbol of each visible side respectively. Vectors shorter than 6 values leave open some uncertainty, leading to probability intervals rather than point values.
 
