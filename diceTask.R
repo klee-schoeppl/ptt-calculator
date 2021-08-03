@@ -192,7 +192,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   deltaP<-pCgA-pCgnA 
   
   # Kemeny & Oppenheim, 1952
-  kemeny<-(pCgA-pCgnA)/(pCgA+pCgnA) 
+  kemeny<-(pAgC-pAgnC)/(pAgC+pAgnC) 
   for (i in 1 : length(kemeny)){
     if (is.na(kemeny[i])){
       kemeny[i]<-c(0)
@@ -354,6 +354,6 @@ analyzeDiceTask <- function(vecA, vecC) {
 
 #vectorA <- logical() #for empty boolean vectors
 #vectorC <- logical() #for emtpy boolean vectors
-vectorA <- c(T,T,T,F,F,F)
-vectorC <- c(T,T,F,T,F,F)
+vectorA <- c(T,F,F,T)
+vectorC <- c(F,F,T,T)
 analyzeDiceTask(vectorA, vectorC)
