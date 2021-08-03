@@ -2,7 +2,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   library(tidyverse)
   library(dplyr)
   library(rapportools)
-  ------------------------------------------------------------------------------
+  #------------------------------------------------------------------------------
   # checking that the input constitutes a diceTask
   if (!is.vector(vecA) |!is.vector(vecC)){
     stop('Invalid input: Expected 2 vectors.')
