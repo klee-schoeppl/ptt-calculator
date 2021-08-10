@@ -2,8 +2,8 @@ analyzeDiceTask <- function(vecA, vecC) {
   library(tidyverse)
   library(dplyr)
   library(rapportools)
-  #------------------------------------------------------------------------------
-  # checking that the input constitutes a diceTask
+  #-----------------------------------------------------------------------------
+  # checking that the input constitutes a Dice Task
   if (!is.vector(vecA) |!is.vector(vecC)){
     stop('Invalid input: Expected 2 vectors.')
   }
@@ -49,8 +49,8 @@ analyzeDiceTask <- function(vecA, vecC) {
     return(column)
   }
   #-----------------------------------------------------------------------------
-  #Reads out the inputs and (if applicable) the arrays containing the variables
-  #for blank sides. 
+  # Reads out the inputs and (if applicable) the arrays containing the variables
+  # for blank sides. 
   A <- (sum(vecA) + aBlanks[[1]] + aBlanks[[2]] + aBlanks[[3]] + aBlanks[[4]] 
         + aBlanks[[5]] + aBlanks[[6]]) #irrelevant values equal 0
   C <- (sum(vecC) + cBlanks[[1]] + cBlanks[[2]] + cBlanks[[3]] + cBlanks[[4]] 
@@ -178,11 +178,11 @@ analyzeDiceTask <- function(vecA, vecC) {
   rips<-replaceNA(rips)
   rips<- 1-rips
 
-  #Carnap, 1962 1/2
-  carnap1<- pCgA - C/6
+  # difference (Carnap, 1962; Eells, 1982; Jeffrey, 1992)
+  difference<- pCgA - C/6
   
-  # Carnap, 1962 2/2
-  carnap2<-(AC/6)-(A/6 * C/6)
+  # Carnap, 1962 
+  carnap<-(AC/6)-(A/6 * C/6)
   
   # Mortimer, 1988
   mortimer<- pAgC - A/6
@@ -192,115 +192,115 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   interpretationTable = data.frame(
     interpretation = c("-->",
-                       "<->",
-                       "&",
-                       "|",
-                       "||",
-                       "|u",
-                       "|l",
-                       "|ul",
-                       "&u",
-                       "&l",
-                       "&ul",
-                       "||u",
-                       "||l",
-                       "||ul",
                        "-->u",
                        "-->l",
                        "-->ul",
+                       "<->",
                        "<->u",
                        "<->l",
-                       "<->ul"),
+                       "<->ul",
+                       "&",
+                       "&u",
+                       "&l",
+                       "&ul",
+                       "|",
+                       "|u",
+                       "|l",
+                       "|ul",
+                       "||",
+                       "||u",
+                       "||l",
+                       "||ul"),
     min = c(min(materialConditional),
-            min(equivalent),
-            min(conjunction),
-            min(conditionalP),
-            min(biconditionalP),
-            min(conditionalP),
-            min(fullignoreConditionalP),
-            min(fullignoreConditionalP),
-            min(conjunction),
-            min(fullignoreConjunction),
-            min(fullignoreConjunction),
-            min(biconditionalP),
-            min(fullignoreBiconditionalP),
-            min(fullignoreBiconditionalP),
             min(materialConditional),
             min(fullignoreMaterialConditional),
             min(fullignoreMaterialConditional),
             min(equivalent),
+            min(equivalent),
             min(fullignoreEquivalent),
-            min(fullignoreEquivalent)),
+            min(fullignoreEquivalent),
+            min(conjunction),
+            min(conjunction),
+            min(fullignoreConjunction),
+            min(fullignoreConjunction),
+            min(conditionalP),
+            min(conditionalP),
+            min(fullignoreConditionalP),
+            min(fullignoreConditionalP),
+            min(biconditionalP),
+            min(biconditionalP),
+            min(fullignoreBiconditionalP),
+            min(fullignoreBiconditionalP)),
     max = c(max(materialConditional),
-            max(equivalent),
-            max(conjunction),
-            max(conditionalP),
-            max(biconditionalP),
-            max(fullignoreConditionalP),
-            max(conditionalP),
-            max(fullignoreConditionalP),
-            max(fullignoreConjunction),
-            max(conjunction),
-            max(fullignoreConjunction),
-            max(fullignoreBiconditionalP),
-            max(biconditionalP),
-            max(fullignoreBiconditionalP),
             max(fullignoreMaterialConditional),
             max(materialConditional),
             max(fullignoreMaterialConditional),
+            max(equivalent),
             max(fullignoreEquivalent),
             max(equivalent),
-            max(fullignoreEquivalent)),
+            max(fullignoreEquivalent),
+            max(conjunction),
+            max(fullignoreConjunction),
+            max(conjunction),
+            max(fullignoreConjunction),
+            max(conditionalP),
+            max(fullignoreConditionalP),
+            max(conditionalP),
+            max(fullignoreConditionalP),
+            max(biconditionalP),
+            max(fullignoreBiconditionalP),
+            max(biconditionalP),
+            max(fullignoreBiconditionalP)),
     stringsAsFactors = FALSE
   )
   print(interpretationTable)
   
   if(length(vecA)==6){
     print(
-      paste0("Because this task doesn't feature uncertainty, ",            
-                 "interpretations predict point values instead of intervals ",
-                 "and halfway interpretations trivially overlap with their ",
-                 "main versions.")
+      paste0("Because this task doesn't feature uncertainty, ",
+             "interpretations predict point values instead of intervals ",
+             "and halfway interpretations trivially overlap with their ",
+             "main versions.")
       )
   }
   
   consequenceNotionTable = data.frame(
     consequenceNotion = c("deltaP/ Christensen",
-                       "Kemeny & Oppenheim",
-                       "Carnap 1",
-                       "Carnap 2",
-                       "Nozick",
-                       "Mortimer",
-                       "Finch",
-                       "Rips"),
+                          "Kemeny & Oppenheim",
+                          "Difference",
+                          "Carnap",
+                          "Nozick",
+                          "Mortimer",
+                          "Finch",
+                          "Rips"),
     min = c(min(deltaP),
             min(kemeny),
-            min(carnap1),
-            min(carnap2),
+            min(difference),
+            min(carnap),
             min(nozick),
             min(mortimer),
             min(finch),
             min(rips)),
     max = c(max(deltaP),
             max(kemeny),
-            max(carnap1),
-            max(carnap2),
+            max(difference),
+            max(carnap),
             max(nozick),
             max(mortimer),
             max(finch),
             max(rips)),
     mean = c(mean(deltaP),
             mean(kemeny),
-            mean(carnap1),
-            mean(carnap2),
+            mean(difference),
+            mean(carnap),
             mean(nozick),
             mean(mortimer),
             mean(finch),
             mean(rips)),
     median = c(median(deltaP),
             median(kemeny),
-            median(carnap1),
-            median(carnap2),
+            median(difference),
+            median(carnap),
             median(nozick),
             median(mortimer),
             median(finch),
@@ -315,8 +315,8 @@ analyzeDiceTask <- function(vecA, vecC) {
 # Expects as input 2 equal length vectors containing 6 or fewer boolean values 
 # each. VecA should contain whether the side in question makes the 
 # antecedent of the conditional true, VecC the conditional. 
-#for empty boolean vectors use <- logical()
+# for empty boolean vectors use <- logical()
 
-vectorA <- c(F,F,F,F)
-vectorC <- c(F,F,F,F)
+vectorA <- c(F,T,T,T,T,T)
+vectorC <- c(F,T,F,F,T,T)
 analyzeDiceTask(vectorA, vectorC)
