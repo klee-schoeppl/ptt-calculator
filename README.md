@@ -11,6 +11,6 @@ This R-subroutine calculates and prints the uncertainty intervals identified by 
 Example: The experiment shows 2 sides of a die, the first a white triangle, the second a black square. Every other side is marked with a question mark. The conditional in question is "If the side facing up shows a triangle, the side shows black.". This means that the first side makes the antecedent of the conditional true, but not the consequent, and the second side vice versa. Thus you input (True, False) as the antecedent vector, and (False, True) as the consequent vector, leaving open the remaining four sides.
 
 For more detailed explanations and application examples, see:
-* Pfeifer, N. & Tulkki, L. (2017). Abductive, causal, and counterfactual conditionals under incomplete probabilistic knowledge. In Gunzelmann, G., Howes, A., Tenbrink, T., &, Davelaar, E. (Eds.). Proceedings of the 39th Cognitive Science Society Meeting (p. 2888-2893).
-* Pfeifer, N. (2013). The new psychology of reasoning: A mental probability logical perspective. Thinking & Reasoning, 19(3-4), 329-345. 
-* Pfeifer, N. (2013). On argument strength. In F. Zenker (Ed.), Bayesian argumentation. The practical side of probability (p. 185-193). Dordrecht: Synthese Library Vol. 362 (Springer).
+* Pfeifer, N. & Tulkki, L. (2017). Abductive, causal, and counterfactual conditionals under incomplete probabilistic knowledge. In Gunzelmann, G., Howes, A., Tenbrink, T., &, Davelaar, E. (Eds.). *Proceedings of the 39th Cognitive Science Society Meeting* (p. 2888-2893).
+* Pfeifer, N. (2013). The new psychology of reasoning: A mental probability logical perspective. *Thinking & Reasoning*, 19(3-4), 329-345. 
+* Pfeifer, N. (2013). On argument strength. In F. Zenker (Ed.), *Bayesian argumentation. The practical side of probability* (p. 185-193). Dordrecht: Synthese Library Vol. 362 (Springer).
