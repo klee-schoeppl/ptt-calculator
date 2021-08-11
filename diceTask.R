@@ -1,3 +1,5 @@
+# Leon Schöppl (2021) <https://github.com/leon-schoeppl/ptt-calculator/>
+
 analyzeDiceTask <- function(vecA, vecC) {
   library(tidyverse)
   library(dplyr)
@@ -20,8 +22,8 @@ analyzeDiceTask <- function(vecA, vecC) {
     stop('Invalid input: Vectors contain too many values.')
   }
   #-----------------------------------------------------------------------------
-  #Vectors shorter than 6 values are taken to be uncertainty tasks with an 
-  #appropriate amount of blank sides.
+  # Vectors shorter than 6 values are taken to be uncertainty tasks with an 
+  # appropriate amount of blank sides.
   aBlanks = list(c(0), c(0), c(0), c(0), c(0), c(0))
   cBlanks = list(c(0), c(0), c(0), c(0), c(0), c(0))
   constituents <<- NULL
@@ -124,7 +126,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   # --> interpretation
   materialConditional <- ((AC + CnA + nAnC)/6) 
-  
+ 
   # 'halfway' --> interpretation
   fullignoreMaterialConditional <- ((tempAC + tempCnA + tempnAnC)/ 6)
   
@@ -132,10 +134,10 @@ analyzeDiceTask <- function(vecA, vecC) {
   equivalent <- (AC / 6 + nAnC / 6)
   
   # 'halfway' <-> interpretation
-  fullignoreEquivalent <- tempAC/6 + tempnAnC/6
+  fullignoreEquivalent <- tempAC / 6 + tempnAnC / 6
  
   # & interpretation
-  conjunction <- AC/6
+  conjunction <- AC / 6
   
   # 'halfway'& interpretation
   fullignoreConjunction <- tempAC / 6
@@ -154,7 +156,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   # 'halfway' || interpretation
   fullignoreBiconditionalP <- tempAC / (6 - tempnAnC)
   fullignoreBiconditionalP<-replaceNA(fullignoreBiconditionalP)
-  
+
   #-----------------------------------------------------------------------------
   #Calculates various measures of confirmation, among them delta P.
   
@@ -167,7 +169,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   # Kemeny & Oppenheim, 1952
   kemeny<-(pAgC-pAgnC)/(pAgC+pAgnC) 
   kemeny<-replaceNA(kemeny)
-  
+ 
   # Finch, 1960
   finch<- (pCgA/(C/6))
   finch<-replaceNA(finch)
@@ -177,7 +179,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   rips<-pnCgA/(nC/6)
   rips<-replaceNA(rips)
   rips<- 1-rips
-
+  
   # difference (Carnap, 1962; Eells, 1982; Jeffrey, 1992)
   difference<- pCgA - C/6
   
@@ -317,6 +319,6 @@ analyzeDiceTask <- function(vecA, vecC) {
 # antecedent of the conditional true, VecC the conditional. 
 # for empty boolean vectors use <- logical()
 
-vectorA <- c(F,T,T,T,T,T)
-vectorC <- c(F,T,F,F,T,T)
+vectorA <- c(F,T,T,T)
+vectorC <- c(F,T,F,F)
 analyzeDiceTask(vectorA, vectorC)
