@@ -1,4 +1,5 @@
 # Leon Schöppl (2021) <https://github.com/leon-schoeppl/ptt-calculator/>
+# DTSv1.0
 
 analyzeDiceTask <- function(vecA, vecC) {
   library(tidyverse)
@@ -156,14 +157,17 @@ analyzeDiceTask <- function(vecA, vecC) {
   # 'halfway' || interpretation
   fullignoreBiconditionalP <- tempAC / (6 - tempnAnC)
   fullignoreBiconditionalP<-replaceNA(fullignoreBiconditionalP)
+  
+  # special &l interpretation
+  specialLowignoredConjunction <- tempAC / (6 - numberOfConceiledSides)
 
   #-----------------------------------------------------------------------------
-  #Calculates various measures of confirmation, among them delta P.
+  # Calculates various measures of confirmation, among them delta P.
   
   # Nozick, 1981 
   nozick<-pAgC -pAgnC
   
-  #Christensen, 1999 (also 'delta P')
+  # Christensen, 1999 (also 'delta P')
   deltaP<-pCgA-pCgnA 
   
   # Kemeny & Oppenheim, 1952
@@ -190,7 +194,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   mortimer<- pAgC - A/6
   
   #-----------------------------------------------------------------------------
-  #prints the results
+  # prints the results
   
   interpretationTable = data.frame(
     interpretation = c("-->",
@@ -212,7 +216,8 @@ analyzeDiceTask <- function(vecA, vecC) {
                        "||",
                        "||u",
                        "||l",
-                       "||ul"),
+                       "||ul",
+                       "special &l"),
     min = c(min(materialConditional),
             min(materialConditional),
             min(fullignoreMaterialConditional),
@@ -232,7 +237,8 @@ analyzeDiceTask <- function(vecA, vecC) {
             min(biconditionalP),
             min(biconditionalP),
             min(fullignoreBiconditionalP),
-            min(fullignoreBiconditionalP)),
+            min(fullignoreBiconditionalP),
+            min(specialLowignoredConjunction)),
     max = c(max(materialConditional),
             max(fullignoreMaterialConditional),
             max(materialConditional),
@@ -252,7 +258,8 @@ analyzeDiceTask <- function(vecA, vecC) {
             max(biconditionalP),
             max(fullignoreBiconditionalP),
             max(biconditionalP),
-            max(fullignoreBiconditionalP)),
+            max(fullignoreBiconditionalP),
+            max(conjunction)),
     stringsAsFactors = FALSE
   )
   print(interpretationTable)
