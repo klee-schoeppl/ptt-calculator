@@ -160,6 +160,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   # special &l interpretation
   specialLowignoredConjunction <- tempAC / (6 - numberOfConceiledSides)
+  specialLowignoredConjunction <- replaceNA(specialLowignoredConjunction)
 
   #-----------------------------------------------------------------------------
   # Calculates various measures of confirmation, among them delta P.
@@ -197,27 +198,27 @@ analyzeDiceTask <- function(vecA, vecC) {
   # prints the results
   
   interpretationTable = data.frame(
-    interpretation = c("-->",
-                       "-->u",
-                       "-->l",
-                       "-->ul",
-                       "<->",
-                       "<->u",
-                       "<->l",
-                       "<->ul",
-                       "&",
-                       "&u",
-                       "&l",
-                       "&ul",
-                       "|",
-                       "|u",
-                       "|l",
-                       "|ul",
-                       "||",
-                       "||u",
-                       "||l",
-                       "||ul",
-                       "special &l"),
+    interpretation = c("Material Implication (-->)",
+                       "--> upper-ignored",
+                       "--> lower-ignored",
+                       "--> full-ignored",
+                       "Equivalent (<->) ",
+                       "<-> upper-ignored",
+                       "<-> lower-ignored",
+                       "<-> full-ignored",
+                       "Conjunction (&)",
+                       "& upper-ignored",
+                       "& lower-ignored",
+                       "& full-ignored",
+                       "Conditional Probability (|)",
+                       "| upper-ignored",
+                       "| lower-ignored",
+                       "| full-ignored",
+                       "Biconditional (||) ",
+                       "|| upper-ignored",
+                       "|| lower-ignored",
+                       "|| full-ignored",
+                       "special & lower-ignored"),
     min = c(min(materialConditional),
             min(materialConditional),
             min(fullignoreMaterialConditional),
