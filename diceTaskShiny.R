@@ -3,14 +3,9 @@ library(tidyverse)
 library(dplyr)
 library(rapportools)
 
-# Define UI for application that draws a histogram
 ui <- fluidPage(
-
     titlePanel("Dice Task Calculator"),
-
-    
     sidebarLayout(
-        
         sidebarPanel(
             h5("Select the setup for this task, the conditional being:"),
             h5("If the side facing up shows A, then the side shows C."),
@@ -326,9 +321,7 @@ server <- function(input, output) {
                     max(conjunction)),
             stringsAsFactors = FALSE
         )
-        
-        
-        
+     
         consequenceNotionTable = data.frame(
             consequenceNotion = c("deltaP/ Christensen",
                                   "Kemeny & Oppenheim",
@@ -374,13 +367,9 @@ server <- function(input, output) {
         )
         
     if(length(vecA)==6){
-           
         output$text <- renderText("Because this task doesn't feature uncertainty, interpretations predict 
         point values instead of intervals and halfway interpretations trivially overlap with their main versions.")
-           
-        
-    }
-        
+    }        
     output$interpretations <- renderTable({interpretationsTable})
     output$notionsOfArgumentStrength <- renderTable({consequenceNotionTable})
     })
