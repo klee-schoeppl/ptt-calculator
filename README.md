@@ -17,4 +17,4 @@ For more detailed explanations and application examples, see:
 
 ***
 #### Dice Task Shiny-App
-This little Shiny application does the exact same thing as the Dice Task Subroutine, but comes with a UI. Accessible [here](https://leon-schoeppl.shinyapps.io/dicetaskshiny/).
+This little Shiny application does the exact same thing as the Dice Task Subroutine, but comes with a UI. Accessible [in the browser hosted by shinyapps.io](https://leon-schoeppl.shinyapps.io/dicetaskshiny/).
