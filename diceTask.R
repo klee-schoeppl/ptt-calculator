@@ -63,16 +63,16 @@ analyzeDiceTask <- function(vecA, vecC) {
   nC<- 6 - C # count of ¬C sides
   tempA <- sum(vecA) #ignoring the blank sides
   tempC <- sum(vecC) #ignoring the blank sides
-
+  
   tempAC <- 0 #ignoring the blank sides
   if (length(vecA)>0){
-  for (i in 1 : length(vecA)){
-    if (vecA[i] & vecC[i]){
-      tempAC <- tempAC + 1
+    for (i in 1 : length(vecA)){
+      if (vecA[i] & vecC[i]){
+        tempAC <- tempAC + 1
+      }
     }
-   }
   }
-
+  
   #AC is the count of sides with both A and C
   AC<- (tempAC + aBlanks[[1]]*cBlanks[[1]] + aBlanks[[2]]*cBlanks[[2]]
         + aBlanks[[3]]*cBlanks[[3]] + aBlanks[[4]]*cBlanks[[4]] 
@@ -86,14 +86,14 @@ analyzeDiceTask <- function(vecA, vecC) {
       }
     }
   }
-
+  
   # nAnC is the count of sides with both ¬A and ¬C
   nAnC <- tempnAnC 
   if (numberOfConceiledSides > 0){
-  for (i in 1 : numberOfConceiledSides){
-    nAnC <- nAnC + ((1-aBlanks[[i]])*(1-cBlanks[[i]]))/2 
-  }}
-    
+    for (i in 1 : numberOfConceiledSides){
+      nAnC <- nAnC + ((1-aBlanks[[i]])*(1-cBlanks[[i]]))/2 
+    }}
+  
   # CnA is the count of sides with C but ¬A
   CnA <- C - AC
   tempCnA <- tempC - tempAC #ignores blanks
@@ -120,14 +120,14 @@ analyzeDiceTask <- function(vecA, vecC) {
   # pnCgA is the probability of ¬C given A
   pnCgA <- AnC/A
   pnCgA <- replaceNA(pnCgA)
-
+  
   #-----------------------------------------------------------------------------
   # Calculates the uncertainty intervals for a wide range of interpretations of
   # the natural language conditionals used in the experiments. 
   
   # --> interpretation
   materialConditional <- ((AC + CnA + nAnC)/6) 
- 
+  
   # 'halfway' --> interpretation
   fullignoreMaterialConditional <- ((tempAC + tempCnA + tempnAnC)/ 6)
   
@@ -136,7 +136,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   # 'halfway' <-> interpretation
   fullignoreEquivalent <- tempAC / 6 + tempnAnC / 6
- 
+  
   # & interpretation
   conjunction <- AC / 6
   
@@ -161,7 +161,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   # special &l interpretation
   specialLowignoredConjunction <- tempAC / (6 - numberOfConceiledSides)
   specialLowignoredConjunction <- replaceNA(specialLowignoredConjunction)
-
+  
   #-----------------------------------------------------------------------------
   # Calculates various measures of confirmation, among them delta P.
   
@@ -174,7 +174,7 @@ analyzeDiceTask <- function(vecA, vecC) {
   # Kemeny & Oppenheim, 1952
   kemeny<-(pAgC-pAgnC)/(pAgC+pAgnC) 
   kemeny<-replaceNA(kemeny)
- 
+  
   # Finch, 1960
   finch<- (pCgA/(C/6))
   finch<-replaceNA(finch)
@@ -201,23 +201,23 @@ analyzeDiceTask <- function(vecA, vecC) {
     interpretation = c("Material Implication (-->)",
                        "--> upper-ignored",
                        "--> lower-ignored",
-                       "--> full-ignored",
+                       "--> fully-ignored",
                        "Equivalent (<->) ",
                        "<-> upper-ignored",
                        "<-> lower-ignored",
-                       "<-> full-ignored",
+                       "<-> fully-ignored",
                        "Conjunction (&)",
                        "& upper-ignored",
                        "& lower-ignored",
-                       "& full-ignored",
+                       "& fully-ignored",
                        "Conditional Probability (|)",
                        "| upper-ignored",
                        "| lower-ignored",
-                       "| full-ignored",
+                       "| fully-ignored",
                        "Biconditional (||) ",
                        "|| upper-ignored",
                        "|| lower-ignored",
-                       "|| full-ignored",
+                       "|| fully-ignored",
                        "special & lower-ignored"),
     min = c(min(materialConditional),
             min(materialConditional),
@@ -271,11 +271,11 @@ analyzeDiceTask <- function(vecA, vecC) {
              "interpretations predict point values instead of intervals ",
              "and halfway interpretations trivially overlap with their ",
              "main versions.")
-      )
+    )
   }
   
   consequenceNotionTable = data.frame(
-    consequenceNotion = c("deltaP/ Christensen",
+    inferentialStrengthNotion = c("deltaP/ Christensen",
                           "Kemeny & Oppenheim",
                           "Difference",
                           "Carnap",
@@ -300,21 +300,21 @@ analyzeDiceTask <- function(vecA, vecC) {
             max(finch),
             max(rips)),
     mean = c(mean(deltaP),
-            mean(kemeny),
-            mean(difference),
-            mean(carnap),
-            mean(nozick),
-            mean(mortimer),
-            mean(finch),
-            mean(rips)),
+             mean(kemeny),
+             mean(difference),
+             mean(carnap),
+             mean(nozick),
+             mean(mortimer),
+             mean(finch),
+             mean(rips)),
     median = c(median(deltaP),
-            median(kemeny),
-            median(difference),
-            median(carnap),
-            median(nozick),
-            median(mortimer),
-            median(finch),
-            median(rips)),
+               median(kemeny),
+               median(difference),
+               median(carnap),
+               median(nozick),
+               median(mortimer),
+               median(finch),
+               median(rips)),
     stringsAsFactors = FALSE
   )
   print(consequenceNotionTable)
@@ -328,5 +328,5 @@ analyzeDiceTask <- function(vecA, vecC) {
 # for empty boolean vectors use <- logical()
 
 vectorA <- c(F,T,T,T)
-vectorC <- c(F,T,F,F)
+vectorC <- c(F,F,F,T)
 analyzeDiceTask(vectorA, vectorC)
