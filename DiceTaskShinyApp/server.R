@@ -67,8 +67,8 @@ server <- function(input, output) {
           + cBlanks[[4]] + cBlanks[[5]] + cBlanks[[6]]) 
     #irrelevant values equal 0
     
-    nA<- 6 - A # count of ¬A sides
-    nC<- 6 - C # count of ¬C sides
+    nA<- 6 - A # count of Â¬A sides
+    nC<- 6 - C # count of Â¬C sides
     tempA <- sum(vecA) #ignoring the blank sides
     tempC <- sum(vecC) #ignoring the blank sides
     
@@ -95,17 +95,17 @@ server <- function(input, output) {
       }
     }
     
-    # nAnC is the count of sides with both ¬A and ¬C
+    # nAnC is the count of sides with both Â¬A and Â¬C
     nAnC <- tempnAnC 
     if (numberOfConceiledSides > 0){
       for (i in 1 : numberOfConceiledSides){
         nAnC <- nAnC + ((1-aBlanks[[i]])*(1-cBlanks[[i]]))/2 
       }}
     
-    # CnA is the count of sides with C but ¬A
+    # CnA is the count of sides with C but Â¬A
     CnA <- C - AC
     tempCnA <- tempC - tempAC #ignores blanks
-    # AnC is the count of sides with A but ¬C
+    # AnC is the count of sides with A but Â¬C
     AnC <- A - AC
     tempAnC <- tempA - tempAC #ignores blanks
     
@@ -113,7 +113,7 @@ server <- function(input, output) {
     pCgA<-AC/A
     pCgA <-replaceNA(pCgA)
     
-    # pCgnA is the probability of C given ¬A
+    # pCgnA is the probability of C given Â¬A
     pCgnA<-CnA/nA
     pCgnA <- replaceNA(pCgnA)
     
@@ -121,11 +121,11 @@ server <- function(input, output) {
     pAgC <- AC/C
     pAgC <- replaceNA(pAgC)
     
-    # pAgnC is the probability of A given ¬C
+    # pAgnC is the probability of A given Â¬C
     pAgnC <- AnC/nC
     pAgnC <- replaceNA(pAgnC)
     
-    # pnCgA is the probability of ¬C given A
+    # pnCgA is the probability of Â¬C given A
     pnCgA <- AnC/A
     pnCgA <- replaceNA(pnCgA)
     
@@ -209,23 +209,23 @@ server <- function(input, output) {
       interpretation = c("Material Implication (-->)",
                          "--> upper-ignored",
                          "--> lower-ignored",
-                         "--> fully ignored",
+                         "--> fully-ignored",
                          "Equivalent (<->) ",
                          "<-> upper-ignored",
                          "<-> lower-ignored",
-                         "<-> fully ignored",
+                         "<-> fully-ignored",
                          "Conjunction (&)",
                          "& upper-ignored",
                          "& lower-ignored",
-                         "& fully ignored",
+                         "& fully-ignored",
                          "Conditional Probability (|)",
                          "| upper-ignored",
                          "| lower-ignored",
-                         "| fully ignored",
+                         "| fully-ignored",
                          "Biconditional (||) ",
                          "|| upper-ignored",
                          "|| lower-ignored",
-                         "|| fully ignored",
+                         "|| fully-ignored",
                          "special & lower-ignored"),
       min = c(min(materialConditional),
               min(materialConditional),
@@ -275,7 +275,7 @@ server <- function(input, output) {
     
     
     consequenceNotionTable = data.frame(
-      consequenceNotion = c("deltaP/ Christensen",
+      inferentialStrengthNotion = c("deltaP/ Christensen",
                             "Kemeny & Oppenheim",
                             "Difference",
                             "Carnap",
@@ -318,6 +318,9 @@ server <- function(input, output) {
       stringsAsFactors = FALSE
     )
     
+    output$interpretations <- renderTable({interpretationsTable})
+    output$notionsOfArgumentStrength <- renderTable({consequenceNotionTable})
+    
     if(length(vecA)==6){
       
       output$text <- renderText("Because this task doesn't feature uncertainty, interpretations predict 
@@ -328,8 +331,6 @@ server <- function(input, output) {
       output$text <- renderText("")
     }
     
-    output$interpretations <- renderTable({interpretationsTable})
-    output$notionsOfArgumentStrength <- renderTable({consequenceNotionTable})
+    
   })
 }
-
