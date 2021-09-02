@@ -1,6 +1,6 @@
 ### PTT-Calculator
 
-Automated analysis of probabilistic truth-table tasks for studies on reasoning under uncertainty. Written as research assistant on BMBF project <01UL1906X> of Dr. Dr. Niki Pfeifer. At this point only so-called dice tasks — see the next section — have been implemented, but a more general analysis is planned.
+Automated analysis of probabilistic truth-table tasks for studies on reasoning under uncertainty. Written as research assistant on [BMBF project <01UL1906X>](https://homepages.uni-regensburg.de/~pfn23853/LogWissUns.html) of Dr. Dr. Niki Pfeifer. At this point only so-called dice tasks — see the next section — have been implemented, but a more general analysis is planned.
 
 ***
 #### Dice Task Subroutine
@@ -17,4 +17,4 @@ For more detailed explanations and application examples, see:
 
 ***
 #### Dice Task Shiny-App
-This little Shiny application does the exact same thing as the Dice Task Subroutine, but comes with a UI. Accessible [in the browser](https://leon-schoeppl.shinyapps.io/dicetaskshiny/)  hosted by *shinyapps.io*.
+This little Shiny application does the exact same thing as the Dice Task Subroutine, but comes with a UI. Quickly accessible for testing [in the browser](https://leon-schoeppl.shinyapps.io/dicetaskshiny/) hosted by *shinyapps.io*. If you want to actually work with the software, please download and run it locally.
