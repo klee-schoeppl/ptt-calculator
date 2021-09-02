@@ -50,7 +50,7 @@ fluidPage(
         # Show a plot of the generated distribution
         mainPanel(
             tableOutput("interpretations"),
-            tableOutput("notionsOfaArgumentStrength"),
+            tableOutput("notionsOfArgumentStrength"),
             textOutput("text")
         )
     )
