@@ -99,7 +99,7 @@ server <- function(input, output) {
     nAnC <- tempnAnC 
     if (numberOfConceiledSides > 0){
       for (i in 1 : numberOfConceiledSides){
-        nAnC <- nAnC + ((1-aBlanks[[i]])*(1-cBlanks[[i]]))/2 
+        nAnC <- nAnC + ((1-aBlanks[[i]])*(1-cBlanks[[i]]))
       }}
     
     # CnA is the count of sides with C but Â¬A
