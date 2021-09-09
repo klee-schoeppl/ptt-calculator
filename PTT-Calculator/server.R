@@ -2,6 +2,7 @@ library(shiny)
 library(tidyverse)
 library(dplyr)
 library(rapportools)
+library(xtable)
 
 server <- function(input, output) {
   observeEvent(input$show, {
@@ -41,6 +42,17 @@ server <- function(input, output) {
        
         stringsAsFactors = FALSE
       )
+      
+      if(input$outputL){
+        output$LaTeX1 <- renderPrint({xtable(formulaeTable)})
+        
+        
+        
+      } else {
+        output$LaTeX1 <- NULL
+        
+      }
+      output$LaTeX2 <- NULL
       output$formulae <- renderTable({formulaeTable})
       output$interpretations <- NULL
       output$notionsOfArgumentStrength <- NULL
@@ -397,11 +409,19 @@ server <- function(input, output) {
         stringsAsFactors = FALSE
       )
       
-      output$interpretations <- renderTable({interpretationsTable})
-      output$notionsOfArgumentStrength <- renderTable({consequenceNotionTable})
-     
+      if(input$outputL){
+        output$LaTeX1 <- renderPrint({xtable(interpretationsTable)})
+        output$LaTeX2 <- renderPrint({xtable(consequenceNotionTable)})
+        
+        
+      } else {
+        output$LaTeX1 <- NULL
+        output$LaTeX2 <- NULL
+      }
+        output$interpretations <- renderTable({interpretationsTable})
+        output$notionsOfArgumentStrength <- renderTable({consequenceNotionTable})
+      
       
     }
     })
 }
-
