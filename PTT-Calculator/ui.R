@@ -28,7 +28,7 @@ fluidPage(
                          max = 10),
             numericInput("blank", "# of [?] cases.", value = 0, min = 0, 
                          max = 10),
-            checkboxInput("outputL", "Output in LaTeX format", value = FALSE, width = NULL),
+            checkboxInput("outputL", "Include output in LaTeX format", value = FALSE, width = NULL),
             
             actionButton("show", "Display formulae"),
             actionButton("do","Calculate")
@@ -39,7 +39,9 @@ fluidPage(
             textOutput("text"),
             tableOutput("formulae"),
             tableOutput("interpretations"),
-            tableOutput("notionsOfArgumentStrength")
+            tableOutput("notionsOfArgumentStrength"),
+            textOutput("LaTeX1"),
+            textOutput("LaTeX2")
         )
     )
 )
