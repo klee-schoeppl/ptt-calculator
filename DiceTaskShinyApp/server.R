@@ -62,17 +62,19 @@ server <- function(input, output) {
     # variables for blank sides. 
     A <- (sum(vecA) + aBlanks[[1]] + aBlanks[[2]] + aBlanks[[3]] 
           +  aBlanks[[4]] + aBlanks[[5]] + aBlanks[[6]]) 
-    #irrelevant values equal 0
+    # irrelevant values equal 0
+    
     C <- (sum(vecC) + cBlanks[[1]] + cBlanks[[2]] + cBlanks[[3]] 
           + cBlanks[[4]] + cBlanks[[5]] + cBlanks[[6]]) 
-    #irrelevant values equal 0
+    # irrelevant values equal 0
     
-    nA<- 6 - A # count of Â¬A sides
-    nC<- 6 - C # count of Â¬C sides
-    tempA <- sum(vecA) #ignoring the blank sides
-    tempC <- sum(vecC) #ignoring the blank sides
+    nA<- 6 - A # count of ¬A sides
+    nC<- 6 - C # count of ¬C sides
     
-    tempAC <- 0 #ignoring the blank sides
+    tempA <- sum(vecA) # ignoring the blank sides
+    tempC <- sum(vecC) # ignoring the blank sides
+    
+    tempAC <- 0 # ignoring the blank sides
     if (length(vecA)>0){
       for (i in 1 : length(vecA)){
         if (vecA[i] & vecC[i]){
@@ -81,12 +83,12 @@ server <- function(input, output) {
       }
     }
     
-    #AC is the count of sides with both A and C
+    # AC is the count of sides with both A and C
     AC<- (tempAC + aBlanks[[1]]*cBlanks[[1]] + aBlanks[[2]]*cBlanks[[2]]
           + aBlanks[[3]]*cBlanks[[3]] + aBlanks[[4]]*cBlanks[[4]] 
           + aBlanks[[5]]*cBlanks[[5]]  + aBlanks[[6]]*cBlanks[[6]])
     
-    tempnAnC <- 0 #ignoring the blank sides
+    tempnAnC <- 0 # ignoring the blank sides
     if(length(vecA)>0){
       for (i in 1 : length(vecA)){
         if (!vecA[i] & !vecC[i]){
@@ -104,10 +106,10 @@ server <- function(input, output) {
     
     # CnA is the count of sides with C but Â¬A
     CnA <- C - AC
-    tempCnA <- tempC - tempAC #ignores blanks
+    tempCnA <- tempC - tempAC # ignores blanks
     # AnC is the count of sides with A but Â¬C
     AnC <- A - AC
-    tempAnC <- tempA - tempAC #ignores blanks
+    tempAnC <- tempA - tempAC # ignores blanks
     
     # pCgA is the probability of C given A
     pCgA<-AC/A
