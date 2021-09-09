@@ -4,9 +4,54 @@ library(dplyr)
 library(rapportools)
 
 server <- function(input, output) {
+  observeEvent(input$show, {
+      output$text <- renderText("Incomplete interpretations are calculated by
+                                ignoring the [?] sides when determining the 
+                                lower bound, upper bound or both.")
+      formulaeTable = data.frame(
+        result = c("Material Implication (-->)",
+                   "Equivalent (<->) ",
+                   "Conjunction (&)",
+                   "Conditional Probability (|)",
+                   "Biconditional (||) ",
+                   "special & lower-ignored",
+                   "deltaP/ Christensen",
+                   "Kemeny & Oppenheim",
+                   "Difference",
+                   "Carnap",
+                   "Nozick",
+                   "Mortimer",
+                   "Finch",
+                   "Rips"),
+        formula = c("P(A ∧ C) +  P(¬A ∧ C) + P(¬A ∧ ¬C)",
+                    "P(A ∧ C) + P(¬A ∧ ¬C)",
+                    "P(A ∧ C)",
+                    "P(A ∧ C) / (P(A ∧ C) + P(A ∧ ¬C))",
+                    "P(A ∧ C) / (P(A ∧ C) + P(A ∧ ¬C) + P(¬A ∧ C))",
+                    "Here, P(A ∧ C) is calculated by dividing by visible sides only.",
+                    "P(C | A) - P(C | ¬A)",
+                    "(P(A | C) - P(A | ¬C)) / (P(A | C) + P(A | ¬C))",
+                    "P(C | A) - P(C)",
+                    "P(A ∧ C) - P(A) * P(C)",
+                    "P(A | C) - P(A | ¬C)",
+                    "P(A | C) - P(A)",
+                    "(P(C | A) / P(C)) - 1",
+                    "1 - (P(¬C | A) / P(¬C))"),
+        
+       
+        stringsAsFactors = FALSE
+      )
+      output$formulae <- renderTable({formulaeTable})
+      output$interpretations <- NULL
+      output$notionsOfArgumentStrength <- NULL
+    
+    
+  })
   observeEvent(input$do, {
+    output$formulae <- NULL
     #---------------------------------------------------------------------------------
     #Checks the input;
+   
     if ((input$blank + input$AC + input$AnC + input$nAC + input$nAnC) != input$caseCount){
       output$text <- renderText("Please make sure the cases add up to your chosen total.")
       output$interpretations <- NULL
@@ -354,6 +399,7 @@ server <- function(input, output) {
       
       output$interpretations <- renderTable({interpretationsTable})
       output$notionsOfArgumentStrength <- renderTable({consequenceNotionTable})
+     
       
     }
     })
