@@ -10,7 +10,8 @@ fluidPage(
     sidebarLayout(
         
         sidebarPanel(
-            h5("Choose the setup for this task. Keep in mind that for high # of [?], the calculation might take a moment (Θ(2^2n))."),
+            h5("Choose the setup for this task. Keep in mind that for high 
+               # of [?], the calculation might take a while (Θ(2^2n))."),
             selectInput("connectiveType", "Select a connective type.", 
                         choices = c('If [A], then [C].', '[A] and [C].')),
             sliderInput("caseCount", "Select the total number of cases.",
@@ -27,22 +28,18 @@ fluidPage(
                          max = 10),
             numericInput("blank", "# of [?] cases.", value = 0, min = 0, 
                          max = 10),
-            checkboxInput("showF", "Show formulae", value = FALSE, width = NULL),
             checkboxInput("outputL", "Output in LaTeX format", value = FALSE, width = NULL),
             
-        
+            actionButton("show", "Display formulae"),
             actionButton("do","Calculate")
         ),
 
         # Show a plot of the generated distribution
         mainPanel(
             textOutput("text"),
+            tableOutput("formulae"),
             tableOutput("interpretations"),
             tableOutput("notionsOfArgumentStrength")
-        
         )
     )
 )
-
-
-
