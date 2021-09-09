@@ -61,10 +61,11 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   nA<- 6 - A # count of ¬A sides
   nC<- 6 - C # count of ¬C sides
-  tempA <- sum(vecA) #ignoring the blank sides
-  tempC <- sum(vecC) #ignoring the blank sides
   
-  tempAC <- 0 #ignoring the blank sides
+  tempA <- sum(vecA) # ignoring the blank sides
+  tempC <- sum(vecC) # ignoring the blank sides
+  
+  tempAC <- 0 # ignoring the blank sides
   if (length(vecA)>0){
     for (i in 1 : length(vecA)){
       if (vecA[i] & vecC[i]){
@@ -73,12 +74,12 @@ analyzeDiceTask <- function(vecA, vecC) {
     }
   }
   
-  #AC is the count of sides with both A and C
+  # AC is the count of sides with both A and C
   AC<- (tempAC + aBlanks[[1]]*cBlanks[[1]] + aBlanks[[2]]*cBlanks[[2]]
         + aBlanks[[3]]*cBlanks[[3]] + aBlanks[[4]]*cBlanks[[4]] 
         + aBlanks[[5]]*cBlanks[[5]]  + aBlanks[[6]]*cBlanks[[6]])
   
-  tempnAnC <- 0 #ignoring the blank sides
+  tempnAnC <- 0 # ignoring the blank sides
   if(length(vecA)>0){
     for (i in 1 : length(vecA)){
       if (!vecA[i] & !vecC[i]){
@@ -96,10 +97,10 @@ analyzeDiceTask <- function(vecA, vecC) {
   
   # CnA is the count of sides with C but ¬A
   CnA <- C - AC
-  tempCnA <- tempC - tempAC #ignores blanks
+  tempCnA <- tempC - tempAC # ignores blanks
   # AnC is the count of sides with A but ¬C
   AnC <- A - AC
-  tempAnC <- tempA - tempAC #ignores blanks
+  tempAnC <- tempA - tempAC # ignores blanks
   
   # pCgA is the probability of C given A
   pCgA<-AC/A
