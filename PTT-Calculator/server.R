@@ -212,20 +212,43 @@ server <- function(input, output) {
       pAC <- AC / input$caseCount
       pnAnC <- nAnC / input$caseCount
       
-      #-------------------------------------------------------------------------
-      print(aBlanks)
-      print(cBlanks)
-      print(A)
-      print(C)
-      print(AC)
-      print(nAnC)
-      
       #-----------------------------------------------------------------------
+      # functions creating halfway-interpretation tables and interpretation rows
+      createTable <- function(symbol, fullignore, interpretation){
+        table = data.frame(
+          interpretation = c(paste (symbol, "upper-ignored"),
+                             paste (symbol,"lower-ignored"),
+                             paste (symbol, "fully-ignored")),
+          min = c(min(interpretation),
+                  min(fullignore),
+                  min(fullignore)),
+          
+          max = c(max(fullignore),
+                  max(interpretation),
+                  max(fullignore)),
+          
+          stringsAsFactors = FALSE
+        )
+        return(table)
+      }
+      
+      createRow <- function(name, interpretation){
+        row = data.frame(
+          interpretation = c(name),
+          min = c(min(interpretation)),
+          
+          max = c(max(interpretation)),
+          
+          stringsAsFactors = FALSE
+        )
+        return(row)
+      }
+      #------------------------------------------------------------------------
       # Calculates the uncertainty intervals for a wide range of 
       # interpretations of the natural language conditionals used. 
       
       # --> interpretation
-      materialConditional <- ((AC + CnA + nAnC)/ input$caseCount) 
+      materialConditional <- ((AC + CnA + nAnC)/ input$caseCount)
       
       # 'halfway' --> interpretation
       fullignoreMaterialConditional <- ((tempAC + tempCnA + tempnAnC) / input$caseCount)
@@ -238,7 +261,7 @@ server <- function(input, output) {
       
       # & interpretation
       conjunction <- pAC
-      
+     
       # 'halfway'& interpretation
       fullignoreConjunction <- tempAC / input$caseCount
       
@@ -258,8 +281,8 @@ server <- function(input, output) {
       fullignoreBiconditionalP<-replaceNA(fullignoreBiconditionalP)
       
       # special &l interpretation
-      specialLowignoredConjunction <- tempAC / (input$caseCount - input$blank)
-      specialLowignoredConjunction <- replaceNA(specialLowignoredConjunction)
+      specialIgnoredConjunction <- tempAC / (input$caseCount - input$blank)
+      specialIgnoredConjunction <- replaceNA(specialIgnoredConjunction)
       
       #-----------------------------------------------------------------------
       # Calculates various measures of confirmation, among them delta P.
@@ -294,76 +317,64 @@ server <- function(input, output) {
       mortimer<- pAgC - pA
       
       #-----------------------------------------------------------------------
-      # prints the results
+      # prints the results as requested in the UI
       
       interpretationsTable = data.frame(
-        interpretation = c("Material Implication (-->)",
-                           "--> upper-ignored",
-                           "--> lower-ignored",
-                           "--> fully-ignored",
-                           "Equivalent (<->) ",
-                           "<-> upper-ignored",
-                           "<-> lower-ignored",
-                           "<-> fully-ignored",
-                           "Conjunction (&)",
-                           "& upper-ignored",
-                           "& lower-ignored",
-                           "& fully-ignored",
-                           "Conditional Probability (|)",
-                           "| upper-ignored",
-                           "| lower-ignored",
-                           "| fully-ignored",
-                           "Biconditional (||) ",
-                           "|| upper-ignored",
-                           "|| lower-ignored",
-                           "|| fully-ignored",
-                           "special & lower-ignored"),
-        min = c(min(materialConditional),
-                min(materialConditional),
-                min(fullignoreMaterialConditional),
-                min(fullignoreMaterialConditional),
-                min(equivalent),
-                min(equivalent),
-                min(fullignoreEquivalent),
-                min(fullignoreEquivalent),
-                min(conjunction),
-                min(conjunction),
-                min(fullignoreConjunction),
-                min(fullignoreConjunction),
-                min(conditionalP),
-                min(conditionalP),
-                min(fullignoreConditionalP),
-                min(fullignoreConditionalP),
-                min(biconditionalP),
-                min(biconditionalP),
-                min(fullignoreBiconditionalP),
-                min(fullignoreBiconditionalP),
-                min(specialLowignoredConjunction)),
-        max = c(max(materialConditional),
-                max(fullignoreMaterialConditional),
-                max(materialConditional),
-                max(fullignoreMaterialConditional),
-                max(equivalent),
-                max(fullignoreEquivalent),
-                max(equivalent),
-                max(fullignoreEquivalent),
-                max(conjunction),
-                max(fullignoreConjunction),
-                max(conjunction),
-                max(fullignoreConjunction),
-                max(conditionalP),
-                max(fullignoreConditionalP),
-                max(conditionalP),
-                max(fullignoreConditionalP),
-                max(biconditionalP),
-                max(fullignoreBiconditionalP),
-                max(biconditionalP),
-                max(fullignoreBiconditionalP),
-                max(conjunction)),
+        interpretation = c(),
+        min = c(),
+        max = c(),
         stringsAsFactors = FALSE
       )
       
+      # Natural language "and"
+      if(input$connectiveType == '[A] and [C].'){
+        interpretationsTable <- rbind(interpretationsTable, createRow("Conjunction (&)", conjunction))
+        
+        if (input$includeH){
+          interpretationsTable <- rbind(interpretationsTable, createTable("&", fullignoreConjunction, conjunction))
+          interpretationsTable <- rbind(interpretationsTable, createTable("special-&", specialIgnoredConjunction, conjunction))
+        }
+      }
       
+      # Natural language "if, then"
+      if(input$connectiveType == 'If [A], then [C].'){
+        interpretationsTable <- rbind(interpretationsTable, createRow("Conditional Probability (|)", conditionalP))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Bionditional Probability (||)", biconditionalP))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Material Conditional (-->)", materialConditional))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Equivalent (<->)", equivalent))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Conjunction (&)", conjunction))
+        
+        if (input$includeH){
+          interpretationsTable <- rbind(interpretationsTable, createTable("|", fullignoreConditionalP, conditionalP))
+          interpretationsTable <- rbind(interpretationsTable, createTable("||", fullignoreBiconditionalP, biconditionalP))
+          interpretationsTable <- rbind(interpretationsTable, createTable("-->", fullignoreMaterialConditional, materialConditional))
+          interpretationsTable <- rbind(interpretationsTable, createTable("<->", fullignoreEquivalent, equivalent))
+          interpretationsTable <- rbind(interpretationsTable, createTable("&", fullignoreConjunction, conjunction))
+          interpretationsTable <- rbind(interpretationsTable, createTable("special-&", specialIgnoredConjunction, conjunction))
+        }
+      }
+      
+      # ANY
+      if(input$connectiveType == '[A] o [C].'){
+        interpretationsTable <- rbind(interpretationsTable, createRow("Conditional Probability (|)", conditionalP))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Biconditional Probability (||)", biconditionalP))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Material Conditional (-->)", materialConditional))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Equivalent (<->)", equivalent))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Conjunction (&)", conjunction))
+        
+        if (input$includeH){
+          interpretationsTable <- rbind(interpretationsTable, createTable("|", fullignoreConditionalP, conditionalP))
+          interpretationsTable <- rbind(interpretationsTable, createTable("||", fullignoreBiconditionalP, biconditionalP))
+          interpretationsTable <- rbind(interpretationsTable, createTable("-->", fullignoreMaterialConditional, materialConditional))
+          interpretationsTable <- rbind(interpretationsTable, createTable("<->", fullignoreEquivalent, equivalent))
+          interpretationsTable <- rbind(interpretationsTable, createTable("&", fullignoreConjunction, conjunction))
+          interpretationsTable <- rbind(interpretationsTable, createTable("special-&", specialIgnoredConjunction, conjunction))
+        }
+      }
+      
+      
+      #-------------------------------------------------------------------------
+      # Combine the Notions of inferential strength into a table.
       
       consequenceNotionTable = data.frame(
         inferentialStrengthNotion = c("deltaP/ Christensen",
@@ -408,6 +419,8 @@ server <- function(input, output) {
                    median(rips)),
         stringsAsFactors = FALSE
       )
+      #-------------------------------------------------------------------------
+      # Decide what to output based on the UI settings
       
       if(input$outputL){
         output$LaTeX1 <- renderPrint({xtable(interpretationsTable)})
@@ -418,8 +431,13 @@ server <- function(input, output) {
         output$LaTeX1 <- NULL
         output$LaTeX2 <- NULL
       }
-        output$interpretations <- renderTable({interpretationsTable})
+      
+      if (input$includeN){
         output$notionsOfArgumentStrength <- renderTable({consequenceNotionTable})
+      } else {
+        output$notionsOfArgumentStrength <- NULL
+      }
+        output$interpretations <- renderTable({interpretationsTable})
       
       
     }
