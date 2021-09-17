@@ -339,7 +339,7 @@ server <- function(input, output) {
       # Natural language "if, then"
       if(input$connectiveType == 'If [A], then [C].'){
         interpretationsTable <- rbind(interpretationsTable, createRow("Conditional Probability (|)", conditionalP))
-        interpretationsTable <- rbind(interpretationsTable, createRow("Bionditional Probability (||)", biconditionalP))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Biconditional Probability (||)", biconditionalP))
         interpretationsTable <- rbind(interpretationsTable, createRow("Material Conditional (-->)", materialConditional))
         interpretationsTable <- rbind(interpretationsTable, createRow("Equivalent (<->)", equivalent))
         interpretationsTable <- rbind(interpretationsTable, createRow("Conjunction (&)", conjunction))
