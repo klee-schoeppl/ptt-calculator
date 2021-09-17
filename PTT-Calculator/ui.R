@@ -13,18 +13,18 @@ fluidPage(
             h4("Choose the setup for this task."),
             
             selectInput("connectiveType", "Select a connective type.", 
-                        choices = c('If [A], then [C].', '[A] and [C].', '[A] o [C].')),
+                        choices = c('If [A], then [C].', '[A] and [C].', '[A] [any connective] [C].')),
             
             h5("As the total number of possible interpretation is quite large, 
                we have tried to group them according to the natural language 
                connectives that they seem most appropriate for. If you wish 
-               to see every interpretation, choose '[A] o [C]'."),
+               to see every interpretation, choose '[A] [any connective] [C]'."),
             
             sliderInput("caseCount", "Select the total number of cases.",
                         min = 2, max = 10,
                         value = 6),
             
-            h5("Keep in mind that for high # of [?] (especially above 6), the 
+            h5("Keep in mind that for a high number (n) of [?] (especially above 6), the 
                calculation might take a while (Θ(2^2n))."),
             
             
