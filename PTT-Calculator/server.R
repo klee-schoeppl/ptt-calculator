@@ -15,6 +15,19 @@ server <- function(input, output) {
                  "Conjunction (&)",
                  "Conditional Probability (|)",
                  "Biconditional (||) ",
+                 "Pierce (NOR)",
+                 "Sheffer (¬&)",
+                 "Contravalence (</>)",
+                 "Postsection (-/>)",
+                 "Replication (<--)",
+                 "Postnonpendence (¬C)",
+                 "Prenonpendence (¬A)",
+                 "Prependence (A)",
+                 "Prependence (C)",
+                 "Tautology (T)",
+                 "Contradiction (⊥)",
+                 "Disjunction (OR)",
+                 "Presection (</-)",
                  "special & lower-ignored",
                  "deltaP/ Christensen",
                  "Kemeny & Oppenheim",
@@ -29,6 +42,19 @@ server <- function(input, output) {
                   "P(A ∧ C)",
                   "P(A ∧ C) / (P(A ∧ C) + P(A ∧ ¬C))",
                   "P(A ∧ C) / (P(A ∧ C) + P(A ∧ ¬C) + P(¬A ∧ C))",
+                  "P(¬A ∧ ¬C)",
+                  "P(¬A ∨ ¬C)",
+                  "P(¬(A <-> C))",
+                  "P(A ∧ ¬C))",
+                  "P(¬A ∧ C))",
+                  "P(¬C))",
+                  "P(¬A))",
+                  "P(A))",
+                  "P(C))",
+                  "P(A ∨ ¬A)",
+                  "P(A ∧ ¬A)",
+                  "P(A ∨ C)",
+                  "P(¬A ∧ C))",
                   "Here, P(A ∧ C) is calculated by dividing by visible sides only.",
                   "P(C | A) - P(C | ¬A)",
                   "(P(A | C) - P(A | ¬C)) / (P(A | C) + P(A | ¬C))",
@@ -281,7 +307,7 @@ server <- function(input, output) {
       postsection <- 1 - materialConditional
       
       # </- interpretation
-      presection <- AnC / input$caseCount
+      presection <- CnA / input$caseCount
       
       # 'halfway' --> interpretation
       fullignoreMaterialConditional <- ((tempAC + tempCnA + tempnAnC) / input$caseCount)
@@ -383,11 +409,9 @@ server <- function(input, output) {
       }
       
       # Natural language "or"
-      if(input$connectiveType == '[A] or [C].'){
+      if(input$connectiveType == '[A] or [C]'){
         interpretationsTable <- rbind(interpretationsTable, createRow("Disjunction (OR)", disjunction))
         
-        if (input$includeH){
-                 }
       }
       
       # Natural language "if, then"
