@@ -45,16 +45,16 @@ server <- function(input, output) {
                   "P(¬A ∧ ¬C)",
                   "P(¬A ∨ ¬C)",
                   "P(¬(A <-> C))",
-                  "P(A ∧ ¬C))",
-                  "P(¬A ∧ C))",
-                  "P(¬C))",
-                  "P(¬A))",
-                  "P(A))",
-                  "P(C))",
+                  "P(A ∧ ¬C)",
+                  "P(¬A ∨ C)",
+                  "P(¬C)",
+                  "P(¬A)",
+                  "P(A)",
+                  "P(C)",
                   "P(A ∨ ¬A)",
                   "P(A ∧ ¬A)",
                   "P(A ∨ C)",
-                  "P(¬A ∧ C))",
+                  "P(¬A ∧ C)",
                   "Here, P(A ∧ C) is calculated by dividing by visible sides only.",
                   "P(C | A) - P(C | ¬A)",
                   "(P(A | C) - P(A | ¬C)) / (P(A | C) + P(A | ¬C))",
@@ -64,8 +64,7 @@ server <- function(input, output) {
                   "P(A | C) - P(A)",
                   "(P(C | A) / P(C)) - 1",
                   "1 - (P(¬C | A) / P(¬C))"),
-      
-      
+                 
       stringsAsFactors = FALSE
     )
     
