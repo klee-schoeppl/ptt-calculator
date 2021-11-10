@@ -247,8 +247,44 @@ server <- function(input, output) {
       # Calculates the uncertainty intervals for a wide range of 
       # interpretations of the natural language conditionals used. 
       
+     # T interpretation
+      tautology <- 1
+      
+      # ⊥ interpretation
+      contradiction <- 0 
+      
+      # A interpretation
+      prependence <- pA
+      
+      # C interpretation
+      postpendence <- pC
+      
+      # only-A interpretation
+      postsection <- (AC - C) / input$caseCount
+      
+      # only-C interpretation
+      presection <- (AC - A) / input$caseCount
+      
+      # ¬A interpretation
+      prenonpendence <- 1 - pA
+      
+      # ¬C interpretation
+      postnonpendence <- 1 - pC
+      
+      # ¬& interpretation (Sheffer stroke)
+      negatedConjunction <- 1 - pAC
+      
+      # halfway ¬& interpretation
+      halfwayNegatedConjunction <- 1 - tempAC / input$caseCount
+      
+      # <-- interpretation
+      replication <- ((AC + AnC + nAnC) / input$caseCount)
+      
       # --> interpretation
       materialConditional <- ((AC + CnA + nAnC)/ input$caseCount)
+      
+      # -/> interpretation
+      postsection <- 1 - materialConditional
       
       # 'halfway' --> interpretation
       fullignoreMaterialConditional <- ((tempAC + tempCnA + tempnAnC) / input$caseCount)
@@ -256,12 +292,18 @@ server <- function(input, output) {
       # <-> interpretation
       equivalent <- (pAC + pnAnC)
       
+      # </> interpretation
+      contravalence <- 1 - equivalent
+      
+      # NOR interpretation
+      pierce <- 1 - pnAnC
+      
       # 'halfway' <-> interpretation
       fullignoreEquivalent <- tempAC / input$caseCount + tempnAnC / input$caseCount
       
       # & interpretation
       conjunction <- pAC
-     
+      
       # 'halfway'& interpretation
       fullignoreConjunction <- tempAC / input$caseCount
       
