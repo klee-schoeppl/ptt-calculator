@@ -13,7 +13,10 @@ fluidPage(
             h4("Choose the setup for this task."),
             
             selectInput("connectiveType", "Select a connective type.", 
-                        choices = c('If [A], then [C].', '[A] and [C].', '[A] [any connective] [C].')),
+                        choices = c('If [A], then [C].', 
+                                    '[A] and [C].', 
+                                    '[A] or [C]',
+                                    '[A] [any connective] [C].')),
             
             h5("As the total number of possible interpretation is quite large, 
                we have tried to group them according to the natural language 
@@ -61,3 +64,6 @@ fluidPage(
         )
     )
 )
+
+
+
