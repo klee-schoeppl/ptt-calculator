@@ -281,7 +281,7 @@ server <- function(input, output) {
       postsection <- 1 - materialConditional
       
       # </- interpretation
-      presection <- nAC / input$caseCount
+      presection <- AnC / input$caseCount
       
       # 'halfway' --> interpretation
       fullignoreMaterialConditional <- ((tempAC + tempCnA + tempnAnC) / input$caseCount)
