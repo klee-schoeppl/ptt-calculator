@@ -6,56 +6,56 @@ library(xtable)
 
 server <- function(input, output) {
   observeEvent(input$show, {
-      output$text <- renderText("Incomplete interpretations are calculated by
+    output$text <- renderText("Incomplete interpretations are calculated by
                                 ignoring the [?] sides when determining the 
                                 lower bound, upper bound or both.")
-      formulaeTable = data.frame(
-        result = c("Material Implication (-->)",
-                   "Equivalent (<->) ",
-                   "Conjunction (&)",
-                   "Conditional Probability (|)",
-                   "Biconditional (||) ",
-                   "special & lower-ignored",
-                   "deltaP/ Christensen",
-                   "Kemeny & Oppenheim",
-                   "Difference",
-                   "Carnap",
-                   "Nozick",
-                   "Mortimer",
-                   "Finch",
-                   "Rips"),
-        formula = c("P(A ∧ C) +  P(¬A ∧ C) + P(¬A ∧ ¬C)",
-                    "P(A ∧ C) + P(¬A ∧ ¬C)",
-                    "P(A ∧ C)",
-                    "P(A ∧ C) / (P(A ∧ C) + P(A ∧ ¬C))",
-                    "P(A ∧ C) / (P(A ∧ C) + P(A ∧ ¬C) + P(¬A ∧ C))",
-                    "Here, P(A ∧ C) is calculated by dividing by visible sides only.",
-                    "P(C | A) - P(C | ¬A)",
-                    "(P(A | C) - P(A | ¬C)) / (P(A | C) + P(A | ¬C))",
-                    "P(C | A) - P(C)",
-                    "P(A ∧ C) - P(A) * P(C)",
-                    "P(A | C) - P(A | ¬C)",
-                    "P(A | C) - P(A)",
-                    "(P(C | A) / P(C)) - 1",
-                    "1 - (P(¬C | A) / P(¬C))"),
-        
-       
-        stringsAsFactors = FALSE
-      )
+    formulaeTable = data.frame(
+      result = c("Material Implication (-->)",
+                 "Equivalent (<->) ",
+                 "Conjunction (&)",
+                 "Conditional Probability (|)",
+                 "Biconditional (||) ",
+                 "special & lower-ignored",
+                 "deltaP/ Christensen",
+                 "Kemeny & Oppenheim",
+                 "Difference",
+                 "Carnap",
+                 "Nozick",
+                 "Mortimer",
+                 "Finch",
+                 "Rips"),
+      formula = c("P(A ∧ C) +  P(¬A ∧ C) + P(¬A ∧ ¬C)",
+                  "P(A ∧ C) + P(¬A ∧ ¬C)",
+                  "P(A ∧ C)",
+                  "P(A ∧ C) / (P(A ∧ C) + P(A ∧ ¬C))",
+                  "P(A ∧ C) / (P(A ∧ C) + P(A ∧ ¬C) + P(¬A ∧ C))",
+                  "Here, P(A ∧ C) is calculated by dividing by visible sides only.",
+                  "P(C | A) - P(C | ¬A)",
+                  "(P(A | C) - P(A | ¬C)) / (P(A | C) + P(A | ¬C))",
+                  "P(C | A) - P(C)",
+                  "P(A ∧ C) - P(A) * P(C)",
+                  "P(A | C) - P(A | ¬C)",
+                  "P(A | C) - P(A)",
+                  "(P(C | A) / P(C)) - 1",
+                  "1 - (P(¬C | A) / P(¬C))"),
       
-      if(input$outputL){
-        output$LaTeX1 <- renderPrint({xtable(formulaeTable)})
-        
-        
-        
-      } else {
-        output$LaTeX1 <- NULL
-        
-      }
-      output$LaTeX2 <- NULL
-      output$formulae <- renderTable({formulaeTable})
-      output$interpretations <- NULL
-      output$notionsOfArgumentStrength <- NULL
+      
+      stringsAsFactors = FALSE
+    )
+    
+    if(input$outputL){
+      output$LaTeX1 <- renderPrint({xtable(formulaeTable)})
+      
+      
+      
+    } else {
+      output$LaTeX1 <- NULL
+      
+    }
+    output$LaTeX2 <- NULL
+    output$formulae <- renderTable({formulaeTable})
+    output$interpretations <- NULL
+    output$notionsOfArgumentStrength <- NULL
     
     
   })
@@ -63,7 +63,7 @@ server <- function(input, output) {
     output$formulae <- NULL
     #---------------------------------------------------------------------------------
     #Checks the input;
-   
+    
     if ((input$blank + input$AC + input$AnC + input$nAC + input$nAnC) != input$caseCount){
       output$text <- renderText("Please make sure the cases add up to your chosen total.")
       output$interpretations <- NULL
@@ -81,7 +81,7 @@ server <- function(input, output) {
       # Saves the inputs to two Boolean vectors;
       vecA <- logical()
       vecC <- logical()
-   
+      
       i <- input$AC
       while (i > 0) {
         vecA <- c(vecA, TRUE)
@@ -111,7 +111,7 @@ server <- function(input, output) {
       aBlanks = list()
       for (i in 1 : input$caseCount){
         aBlanks <- append(aBlanks, c(0))
-       
+        
       }
       cBlanks <- aBlanks
       constituents <<- NULL
@@ -247,7 +247,7 @@ server <- function(input, output) {
       # Calculates the uncertainty intervals for a wide range of 
       # interpretations of the natural language conditionals used. 
       
-     # T interpretation
+      # T interpretation
       tautology <- 1
       
       # ⊥ interpretation
@@ -258,12 +258,6 @@ server <- function(input, output) {
       
       # C interpretation
       postpendence <- pC
-      
-      # only-A interpretation
-      postsection <- (AC - C) / input$caseCount
-      
-      # only-C interpretation
-      presection <- (AC - A) / input$caseCount
       
       # ¬A interpretation
       prenonpendence <- 1 - pA
@@ -285,6 +279,9 @@ server <- function(input, output) {
       
       # -/> interpretation
       postsection <- 1 - materialConditional
+      
+      # </- interpretation
+      presection <- nAC / input$caseCount
       
       # 'halfway' --> interpretation
       fullignoreMaterialConditional <- ((tempAC + tempCnA + tempnAnC) / input$caseCount)
@@ -325,6 +322,13 @@ server <- function(input, output) {
       # special &l interpretation
       specialIgnoredConjunction <- tempAC / (input$caseCount - input$blank)
       specialIgnoredConjunction <- replaceNA(specialIgnoredConjunction)
+      
+      # OR - interpretation
+      disjunction <- 1 - pnAnC
+      
+      
+      
+      
       
       #-----------------------------------------------------------------------
       # Calculates various measures of confirmation, among them delta P.
@@ -378,6 +382,14 @@ server <- function(input, output) {
         }
       }
       
+      # Natural language "or"
+      if(input$connectiveType == '[A] or [C].'){
+        interpretationsTable <- rbind(interpretationsTable, createRow("Disjunction (OR)", disjunction))
+        
+        if (input$includeH){
+                 }
+      }
+      
       # Natural language "if, then"
       if(input$connectiveType == 'If [A], then [C].'){
         interpretationsTable <- rbind(interpretationsTable, createRow("Conditional Probability (|)", conditionalP))
@@ -397,12 +409,27 @@ server <- function(input, output) {
       }
       
       # ANY
-      if(input$connectiveType == '[A] o [C].'){
+      if(input$connectiveType == '[A] [any connective] [C].'){
         interpretationsTable <- rbind(interpretationsTable, createRow("Conditional Probability (|)", conditionalP))
         interpretationsTable <- rbind(interpretationsTable, createRow("Biconditional Probability (||)", biconditionalP))
         interpretationsTable <- rbind(interpretationsTable, createRow("Material Conditional (-->)", materialConditional))
         interpretationsTable <- rbind(interpretationsTable, createRow("Equivalent (<->)", equivalent))
         interpretationsTable <- rbind(interpretationsTable, createRow("Conjunction (&)", conjunction))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Pierce (NOR)", pierce))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Sheffer (¬&)", negatedConjunction))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Contravalence (</>)", contravalence))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Postsection (-/>)", postsection))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Replication (<--)", replication))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Postnonpendence (¬C)", postnonpendence))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Prenonpendence (¬A)", prenonpendence))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Prependence (A)", prependence))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Prependence (C)", postpendence))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Tautology (T)", tautology))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Contradiction (⊥)", contradiction))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Disjunction (OR)", disjunction))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Presection (</-)", presection))
+   
+        
         
         if (input$includeH){
           interpretationsTable <- rbind(interpretationsTable, createTable("|", fullignoreConditionalP, conditionalP))
@@ -411,6 +438,7 @@ server <- function(input, output) {
           interpretationsTable <- rbind(interpretationsTable, createTable("<->", fullignoreEquivalent, equivalent))
           interpretationsTable <- rbind(interpretationsTable, createTable("&", fullignoreConjunction, conjunction))
           interpretationsTable <- rbind(interpretationsTable, createTable("special-&", specialIgnoredConjunction, conjunction))
+          interpretationsTable <- rbind(interpretationsTable, createTable("¬&", halfwayNegatedConjunction, negatedConjunction))
         }
       }
       
@@ -479,9 +507,10 @@ server <- function(input, output) {
       } else {
         output$notionsOfArgumentStrength <- NULL
       }
-        output$interpretations <- renderTable({interpretationsTable})
+      output$interpretations <- renderTable({interpretationsTable})
       
       
     }
-    })
+  })
 }
+
