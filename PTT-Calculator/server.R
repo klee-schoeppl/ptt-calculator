@@ -46,7 +46,7 @@ server <- function(input, output) {
                   "P(¬A ∨ ¬C)",
                   "P(¬(A <-> C))",
                   "P(A ∧ ¬C)",
-                  "P(¬A ∨ C)",
+                  "P(A ∨ ¬C)",
                   "P(¬C)",
                   "P(¬A)",
                   "P(A)",
