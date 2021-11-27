@@ -3,6 +3,9 @@ library(tidyverse)
 library(dplyr)
 library(rapportools)
 library(xtable)
+library(latex2exp)
+
+
 
 server <- function(input, output) {
   observeEvent(input$show, {
@@ -37,6 +40,8 @@ server <- function(input, output) {
                  "Mortimer",
                  "Finch",
                  "Rips"),
+      #"P(A \land C) + P(\neg A \land C) + P(\neg A \land \neg C)"
+      #"P(A ∧ C) +  P(¬A ∧ C) + P(¬A ∧ ¬C)",
       formula = c("P(A ∧ C) +  P(¬A ∧ C) + P(¬A ∧ ¬C)",
                   "P(A ∧ C) + P(¬A ∧ ¬C)",
                   "P(A ∧ C)",
@@ -64,12 +69,74 @@ server <- function(input, output) {
                   "P(A | C) - P(A)",
                   "(P(C | A) / P(C)) - 1",
                   "1 - (P(¬C | A) / P(¬C))"),
-                 
+      
+      stringsAsFactors = FALSE
+    )
+    
+    formulaexTable = data.frame(
+      result = c("Material Implication ($\\rightarrow$)",
+                 "Equivalent ($\\leftrightarrow$) ",
+                 "Conjunction ($\\land$)",
+                 "Conditional Probability ($|$)",
+                 "Biconditional ($||$) ",
+                 "Pierce (NOR)",
+                 "Sheffer ($\\neg \\land$)",
+                 "Contravalence ($\\not \\leftrightarrow$)",
+                 "Postsection ($\\not \\rightarrow$)",
+                 "Replication ($\\leftarrow$)",
+                 "Postnonpendence ($\\neg C$)",
+                 "Prenonpendence ($\\neg A$)",
+                 "Prependence (A)",
+                 "Prependence (C)",
+                 "Tautology ($\\top$)",
+                 "Contradiction ($\\bot$)",
+                 "Disjunction (OR)",
+                 "Presection ($\\not \\leftarrow$)",
+                 "special $\\land$ lower-ignored",
+                 "deltaP/ Christensen",
+                 "Kemeny and Oppenheim",
+                 "Difference",
+                 "Carnap",
+                 "Nozick",
+                 "Mortimer",
+                 "Finch",
+                 "Rips"),
+      
+      formula = c("$P(A \\land C) + P(\\neg A \\land C) + P(\\neg A \\land \\neg C)$",
+                  "$P(A \\land C) + P(\\neg A \\land \\neg C)$",
+                  "$P(A \\land C)$",
+                  "$\\frac{P(A \\land C)}{P(A \\land C) + P(A \\land \\neg C)}$",
+                  "$\\frac{P(A \\land C)} {P(A \\land C) + P(A \\land \\neg C) + P(\\neg A \\land C)}$",
+                  "$P(\\neg A \\land \\neg C)$",
+                  "$P(\\neg A \\lor \\neg C)$",
+                  "$P(\\neg (A \\leftrightarrow C))$",
+                  "$P(A \\land \\neg C)$",
+                  "$P(A \\lor \\neg C)$",
+                  "$P(\\neg C)$",
+                  "$P(\\neg A)$",
+                  "$P(A)$",
+                  "$P(C)$",
+                  "$P(A \\lor \\neg A)$",
+                  "$P(A \\land \\neg A)$",
+                  "$P(A \\lor C)$",
+                  "$P(\\neg A \\land C)$",
+                  "Here, $P(A \\land C)$ is calculated by dividing by visible sides only.",
+                  "$P(C | A) - P(C | \\neg A)$",
+                  "$\\frac{P(A | C) - P(A | \\neg C)}{(P(A | C) + P(A | \\neg C)}$",
+                  "$P(C | A) - P(C)$",
+                  "$P(A \\land C) - P(A) \\times P(C)$",
+                  "$P(A | C) - P(A | \\neg C)$",
+                  "$P(A | C) - P(A)$",
+                  "$\\frac{P(C | A)}{P(C)} - 1$",
+                  "$1 - \\frac{P(¬C | A)}{P(¬C)}$"),
+      
       stringsAsFactors = FALSE
     )
     
     if(input$outputL){
-      output$LaTeX1 <- renderPrint({xtable(formulaeTable)})
+      
+      
+      output$LaTeX1 <- renderPrint({print(xtable(formulaexTable), sanitize.text.function=function(x){x})})
       
       
       
@@ -397,19 +464,36 @@ server <- function(input, output) {
         stringsAsFactors = FALSE
       )
       
+      interpretationsxTable = data.frame(
+        interpretation = c(),
+        min = c(),
+        max = c(),
+        stringsAsFactors = FALSE
+      )
+      
       # Natural language "and"
       if(input$connectiveType == '[A] and [C].'){
         interpretationsTable <- rbind(interpretationsTable, createRow("Conjunction (&)", conjunction))
         
+        interpretationsxTable <- interpretationsTable
+        interpretationsxTable[["interpretation"]] <- c("conjunction ($\\land$)")
+        
         if (input$includeH){
           interpretationsTable <- rbind(interpretationsTable, createTable("&", fullignoreConjunction, conjunction))
           interpretationsTable <- rbind(interpretationsTable, createTable("special-&", specialIgnoredConjunction, conjunction))
+          interpretationsxTable <- interpretationsTable
+          interpretationsxTable[["interpretation"]] <- c("conjunction ($\\land$)",
+                                                         "$\\land$",
+                                                         "special-$\\land$")
         }
       }
       
       # Natural language "or"
       if(input$connectiveType == '[A] or [C]'){
         interpretationsTable <- rbind(interpretationsTable, createRow("Disjunction (OR)", disjunction))
+        
+        interpretationsxTable <- interpretationsTable
+        interpretationsxTable[["interpretation"]] <- c("disjunction ($\\lor$)")
         
       }
       
@@ -421,6 +505,13 @@ server <- function(input, output) {
         interpretationsTable <- rbind(interpretationsTable, createRow("Equivalent (<->)", equivalent))
         interpretationsTable <- rbind(interpretationsTable, createRow("Conjunction (&)", conjunction))
         
+        interpretationsxTable <- interpretationsTable
+        interpretationsxTable[["interpretation"]] <- c("Conditional Probability ($|$)",
+                                                       "Biconditional Probability ($||$)",
+                                                       "Material Conditional ($\\rightarrow$)",
+                                                       "Equivalent ($\\leftrightarrow$)",
+                                                       "conjunction ($\\land$)")
+        
         if (input$includeH){
           interpretationsTable <- rbind(interpretationsTable, createTable("|", fullignoreConditionalP, conditionalP))
           interpretationsTable <- rbind(interpretationsTable, createTable("||", fullignoreBiconditionalP, biconditionalP))
@@ -428,6 +519,19 @@ server <- function(input, output) {
           interpretationsTable <- rbind(interpretationsTable, createTable("<->", fullignoreEquivalent, equivalent))
           interpretationsTable <- rbind(interpretationsTable, createTable("&", fullignoreConjunction, conjunction))
           interpretationsTable <- rbind(interpretationsTable, createTable("special-&", specialIgnoredConjunction, conjunction))
+          
+          interpretationsxTable <- interpretationsTable
+          interpretationsxTable[["interpretation"]] <- c("Conditional Probability ($|$)",
+                                                         "Biconditional Probability ($||$)",
+                                                         "Material Conditional ($\\rightarrow$)",
+                                                         "Equivalent ($\\leftrightarrow$)",
+                                                         "conjunction ($\\land$)",
+                                                         "$|$",
+                                                         "$||$",
+                                                         "$\\rightarrow",
+                                                         "$\\leftrightarrow$",
+                                                         "$\\land$",
+                                                         "special-$\\land$")
         }
       }
       
@@ -446,12 +550,32 @@ server <- function(input, output) {
         interpretationsTable <- rbind(interpretationsTable, createRow("Postnonpendence (¬C)", postnonpendence))
         interpretationsTable <- rbind(interpretationsTable, createRow("Prenonpendence (¬A)", prenonpendence))
         interpretationsTable <- rbind(interpretationsTable, createRow("Prependence (A)", prependence))
-        interpretationsTable <- rbind(interpretationsTable, createRow("Prependence (C)", postpendence))
+        interpretationsTable <- rbind(interpretationsTable, createRow("Postpendence (C)", postpendence))
         interpretationsTable <- rbind(interpretationsTable, createRow("Tautology (T)", tautology))
         interpretationsTable <- rbind(interpretationsTable, createRow("Contradiction (⊥)", contradiction))
         interpretationsTable <- rbind(interpretationsTable, createRow("Disjunction (OR)", disjunction))
         interpretationsTable <- rbind(interpretationsTable, createRow("Presection (</-)", presection))
-   
+        
+        interpretationsxTable <- interpretationsTable
+        interpretationsxTable[["interpretation"]] <- c("Conditional Probability ($|$)",
+                                                       "Biconditional Probability ($||$)",
+                                                       "Material Conditional ($\\rightarrow$)",
+                                                       "Equivalent ($\\leftrightarrow$)",
+                                                       "conjunction ($\\land$)",
+                                                       "Pierce (NOR)",
+                                                       "Sheffer ($\\neg \\land$)",
+                                                       "Contravalence ($\\not \\leftrightarrow$)",
+                                                       "Postsection ($\\not \\rightarrow$)",
+                                                       "Replication ($\\leftarrow$)",
+                                                       "Postnonpendence ($\\neg C$)",
+                                                       "Prenonpendence ($\\neg A$)",
+                                                       "Prependence (A)",
+                                                       "Postpendence (C)",
+                                                       "Tautology ($\\top$)",
+                                                       "Contradiction ($\\bot$)",
+                                                       "Disjunction (OR)",
+                                                       "Presection ($\\not \\leftarrow$)")
+        
         
         
         if (input$includeH){
@@ -462,8 +586,39 @@ server <- function(input, output) {
           interpretationsTable <- rbind(interpretationsTable, createTable("&", fullignoreConjunction, conjunction))
           interpretationsTable <- rbind(interpretationsTable, createTable("special-&", specialIgnoredConjunction, conjunction))
           interpretationsTable <- rbind(interpretationsTable, createTable("¬&", halfwayNegatedConjunction, negatedConjunction))
+          
+          interpretationsxTable <- interpretationsTable
+          interpretationsxTable[["interpretation"]] <- c("Conditional Probability ($|$)",
+                                                         "Biconditional Probability ($||$)",
+                                                         "Material Conditional ($\\rightarrow$)",
+                                                         "Equivalent ($\\leftrightarrow$)",
+                                                         "conjunction ($\\land$)",
+                                                         "Pierce (NOR)",
+                                                         "Sheffer ($\\neg \\land$)",
+                                                         "Contravalence ($\\not \\leftrightarrow$)",
+                                                         "Postsection ($\\not \\rightarrow$)",
+                                                         "Replication ($\\leftarrow$)",
+                                                         "Postnonpendence ($\\neg C$)",
+                                                         "Prenonpendence ($\\neg A$)",
+                                                         "Prependence (A)",
+                                                         "Postpendence (C)",
+                                                         "Tautology ($\\top$)",
+                                                         "Contradiction ($\\bot$)",
+                                                         "Disjunction (OR)",
+                                                         "Presection ($\\not \\leftarrow$)",
+                                                         "$|$",
+                                                         "$||$",
+                                                         "$\\rightarrow",
+                                                         "$\\leftrightarrow$",
+                                                         "$\\land$",
+                                                         "special-$\\land$",
+                                                         "$\\neg \\land$")
         }
+        
+        
       }
+      
+      
       
       
       #-------------------------------------------------------------------------
@@ -471,7 +626,7 @@ server <- function(input, output) {
       
       consequenceNotionTable = data.frame(
         inferentialStrengthNotion = c("deltaP/ Christensen",
-                                      "Kemeny & Oppenheim",
+                                      "Kemeny and Oppenheim",
                                       "Difference",
                                       "Carnap",
                                       "Nozick",
@@ -515,18 +670,25 @@ server <- function(input, output) {
       #-------------------------------------------------------------------------
       # Decide what to output based on the UI settings
       
-      if(input$outputL){
-        output$LaTeX1 <- renderPrint({xtable(interpretationsTable)})
-        output$LaTeX2 <- renderPrint({xtable(consequenceNotionTable)})
-        
-        
+      if(input$outputL){ #include LaTeX interpretations-table?
+        output$LaTeX1 <- renderPrint({print(xtable(interpretationsxTable), sanitize.text.function=function(x){x})})
       } else {
         output$LaTeX1 <- NULL
-        output$LaTeX2 <- NULL
       }
       
-      if (input$includeN){
+      if (input$includeN){ #include notions-table?
         output$notionsOfArgumentStrength <- renderTable({consequenceNotionTable})
+        
+        if(input$outputL){ #include LaTeX notions-table?
+          
+          output$LaTeX2 <- renderPrint({print(xtable(consequenceNotionTable), sanitize.text.function=function(x){x})})
+          
+          
+        } else {
+          output$LaTeX2 <- NULL
+        }
+        
+        
       } else {
         output$notionsOfArgumentStrength <- NULL
       }
