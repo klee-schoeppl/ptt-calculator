@@ -477,14 +477,18 @@ server <- function(input, output) {
         
         interpretationsxTable <- interpretationsTable
         interpretationsxTable[["interpretation"]] <- c("conjunction ($\\land$)")
+      
+        
         
         if (input$includeH){
+          #shiny table
           interpretationsTable <- rbind(interpretationsTable, createTable("&", fullignoreConjunction, conjunction))
           interpretationsTable <- rbind(interpretationsTable, createTable("special-&", specialIgnoredConjunction, conjunction))
-          interpretationsxTable <- interpretationsTable
-          interpretationsxTable[["interpretation"]] <- c("conjunction ($\\land$)",
-                                                         "$\\land$",
-                                                         "special-$\\land$")
+          
+          #LaTeX table
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("\\land", fullignoreConjunction, conjunction))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("special-$\\land$", specialIgnoredConjunction, conjunction))
+          
         }
       }
       
@@ -520,18 +524,14 @@ server <- function(input, output) {
           interpretationsTable <- rbind(interpretationsTable, createTable("&", fullignoreConjunction, conjunction))
           interpretationsTable <- rbind(interpretationsTable, createTable("special-&", specialIgnoredConjunction, conjunction))
           
-          interpretationsxTable <- interpretationsTable
-          interpretationsxTable[["interpretation"]] <- c("Conditional Probability ($|$)",
-                                                         "Biconditional Probability ($||$)",
-                                                         "Material Conditional ($\\rightarrow$)",
-                                                         "Equivalent ($\\leftrightarrow$)",
-                                                         "conjunction ($\\land$)",
-                                                         "$|$",
-                                                         "$||$",
-                                                         "$\\rightarrow",
-                                                         "$\\leftrightarrow$",
-                                                         "$\\land$",
-                                                         "special-$\\land$")
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("$|$", fullignoreConditionalP, conditionalP))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("$||$", fullignoreBiconditionalP, biconditionalP))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("$\\rightarrow$", fullignoreMaterialConditional, materialConditional))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("$\\leftrightarrow$", fullignoreEquivalent, equivalent))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("$\\land$", fullignoreConjunction, conjunction))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("special-$\\land$", specialIgnoredConjunction, conjunction))
+          
+        
         }
       }
       
@@ -587,32 +587,15 @@ server <- function(input, output) {
           interpretationsTable <- rbind(interpretationsTable, createTable("special-&", specialIgnoredConjunction, conjunction))
           interpretationsTable <- rbind(interpretationsTable, createTable("¬&", halfwayNegatedConjunction, negatedConjunction))
           
-          interpretationsxTable <- interpretationsTable
-          interpretationsxTable[["interpretation"]] <- c("Conditional Probability ($|$)",
-                                                         "Biconditional Probability ($||$)",
-                                                         "Material Conditional ($\\rightarrow$)",
-                                                         "Equivalent ($\\leftrightarrow$)",
-                                                         "conjunction ($\\land$)",
-                                                         "Pierce (NOR)",
-                                                         "Sheffer ($\\neg \\land$)",
-                                                         "Contravalence ($\\not \\leftrightarrow$)",
-                                                         "Postsection ($\\not \\rightarrow$)",
-                                                         "Replication ($\\leftarrow$)",
-                                                         "Postnonpendence ($\\neg C$)",
-                                                         "Prenonpendence ($\\neg A$)",
-                                                         "Prependence (A)",
-                                                         "Postpendence (C)",
-                                                         "Tautology ($\\top$)",
-                                                         "Contradiction ($\\bot$)",
-                                                         "Disjunction (OR)",
-                                                         "Presection ($\\not \\leftarrow$)",
-                                                         "$|$",
-                                                         "$||$",
-                                                         "$\\rightarrow",
-                                                         "$\\leftrightarrow$",
-                                                         "$\\land$",
-                                                         "special-$\\land$",
-                                                         "$\\neg \\land$")
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("$|$", fullignoreConditionalP, conditionalP))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("$||$", fullignoreBiconditionalP, biconditionalP))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("$\\rightarrow$", fullignoreMaterialConditional, materialConditional))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("$\\leftrightarrow$", fullignoreEquivalent, equivalent))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("$\\land$", fullignoreConjunction, conjunction))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("special-$\\land$", specialIgnoredConjunction, conjunction))
+          interpretationsxTable <- rbind(interpretationsxTable, createTable("$\\neg \\land$", halfwayNegatedConjunction, negatedConjunction))
+          
+          
         }
         
         
