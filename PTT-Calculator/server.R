@@ -26,7 +26,7 @@ server <- function(input, output) {
                  "Postnonpendence (¬C)",
                  "Prenonpendence (¬A)",
                  "Prependence (A)",
-                 "Prependence (C)",
+                 "Postpendence (C)",
                  "Tautology (T)",
                  "Contradiction (⊥)",
                  "Disjunction (OR)",
@@ -39,7 +39,9 @@ server <- function(input, output) {
                  "Nozick",
                  "Mortimer",
                  "Finch",
-                 "Rips"),
+                 "Rips",
+                 "Log-ratio",
+                 "Log-likelyhood ratio"),
       #"P(A \land C) + P(\neg A \land C) + P(\neg A \land \neg C)"
       #"P(A ∧ C) +  P(¬A ∧ C) + P(¬A ∧ ¬C)",
       formula = c("P(A ∧ C) +  P(¬A ∧ C) + P(¬A ∧ ¬C)",
@@ -68,7 +70,9 @@ server <- function(input, output) {
                   "P(A | C) - P(A | ¬C)",
                   "P(A | C) - P(A)",
                   "(P(C | A) / P(C)) - 1",
-                  "1 - (P(¬C | A) / P(¬C))"),
+                  "1 - (P(¬C | A) / P(¬C))",
+                  "log(P(C|A)/P(C))",
+                  "log(P(A|C)/P(A|¬C)"),
       
       stringsAsFactors = FALSE
     )
@@ -87,20 +91,22 @@ server <- function(input, output) {
                  "Postnonpendence ($\\neg C$)",
                  "Prenonpendence ($\\neg A$)",
                  "Prependence (A)",
-                 "Prependence (C)",
+                 "Postpendence (C)",
                  "Tautology ($\\top$)",
                  "Contradiction ($\\bot$)",
                  "Disjunction (OR)",
                  "Presection ($\\not \\leftarrow$)",
                  "special $\\land$ lower-ignored",
-                 "deltaP/ Christensen",
+                 "$\\Delta P$ (Christensen)",
                  "Kemeny and Oppenheim",
                  "Difference",
                  "Carnap",
                  "Nozick",
                  "Mortimer",
                  "Finch",
-                 "Rips"),
+                 "Rips",
+                 "Log-ratio",
+                 "Log-likelyhood ratio"),
       
       formula = c("$P(A \\land C) + P(\\neg A \\land C) + P(\\neg A \\land \\neg C)$",
                   "$P(A \\land C) + P(\\neg A \\land \\neg C)$",
@@ -128,7 +134,9 @@ server <- function(input, output) {
                   "$P(A | C) - P(A | \\neg C)$",
                   "$P(A | C) - P(A)$",
                   "$\\frac{P(C | A)}{P(C)} - 1$",
-                  "$1 - \\frac{P(¬C | A)}{P(¬C)}$"),
+                  "$1 - \\frac{P(¬C | A)}{P(¬C)}$",
+                  "$log \\frac{P(C|A)}{P(C)}$",
+                  "$log \\frac{P(A|C)}{P(A|\\neg C)}$"),
       
       stringsAsFactors = FALSE
     )
@@ -454,6 +462,12 @@ server <- function(input, output) {
       # Mortimer, 1988
       mortimer<- pAgC - pA
       
+      # log-ratio measure (Howson & Urbach, 1993)
+      logRatio <- log(pCgA/pA)
+      
+      # log-likelihood ratio measure (Hartmann & Sprenger, 2019)
+      logLikelihood <- log(pAgC/pAgnC)
+      
       #-----------------------------------------------------------------------
       # prints the results as requested in the UI
       
@@ -615,7 +629,9 @@ server <- function(input, output) {
                                       "Nozick",
                                       "Mortimer",
                                       "Finch",
-                                      "Rips"),
+                                      "Rips",
+                                      "log-ratio",
+                                      "log-likelyhood ratio"),
         min = c(min(deltaP),
                 min(kemeny),
                 min(difference),
@@ -623,7 +639,9 @@ server <- function(input, output) {
                 min(nozick),
                 min(mortimer),
                 min(finch),
-                min(rips)),
+                min(rips),
+                min(logRatio),
+                min(logLikelihood)),
         max = c(max(deltaP),
                 max(kemeny),
                 max(difference),
@@ -631,7 +649,9 @@ server <- function(input, output) {
                 max(nozick),
                 max(mortimer),
                 max(finch),
-                max(rips)),
+                max(rips),
+                max(logRatio),
+                max(logLikelihood)),
         mean = c(mean(deltaP),
                  mean(kemeny),
                  mean(difference),
@@ -639,7 +659,9 @@ server <- function(input, output) {
                  mean(nozick),
                  mean(mortimer),
                  mean(finch),
-                 mean(rips)),
+                 mean(rips),
+                 mean(logRatio),
+                 mean(logLikelihood)),
         median = c(median(deltaP),
                    median(kemeny),
                    median(difference),
@@ -647,7 +669,9 @@ server <- function(input, output) {
                    median(nozick),
                    median(mortimer),
                    median(finch),
-                   median(rips)),
+                   median(rips),
+                   median(logRatio),
+                   median(logLikelihood)),
         stringsAsFactors = FALSE
       )
       #-------------------------------------------------------------------------
