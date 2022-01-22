@@ -5,6 +5,10 @@ Automated analysis of probabilistic truth-table tasks for studies on reasoning u
 #### 2. PTT-Calculator
 The current - unfinished - version can be accessed for testing in the browser [here](https://leon-schoeppl.shinyapps.io/ptt-calculator/), hosted by *shinyapps.io*.
 
+This small program aims to automatically calculate the uncertainty intervals or probability point-values of sentences featuring two propositions (the *antecedent* (A) and the *consequent* (C)) connected by sentence-connectives. I've implemented a variety (of interpretations) of sentence connectives, and attempted to group them according to their natural language counterparts.
+
+In addition, for each case the program also calculates the values of 10 different measures of argument strength (or factual support) between the antecedent and the consequent. Keep in mind that not all of these probabilistic measures share the same domain.
+
 ***
 #### 3. Dice Task Subroutine
 Dice tasks constitute that subset of probabilistic truth table tasks which is restricted to 6 sides of a die, each featuring a symbol and a color. Participants ought to evaluate the probability intervals of conditional sentences like: “If the side facing up shows *antecedent* (A), then the side shows *consequent* (C).”. *A* and *C* are independent, so if one is a symbol, the other is a color (and vice versa). In-completeness of probabilistic knowledge is introduced by leaving some sides of the dice blank, which is marked by *?*.
@@ -21,7 +25,8 @@ This little Shiny application does the exact same thing as the Dice Task Subrout
 
 ***
 #### 5. References
-* Hartmann, S., & Sprenger, J. (2010). Bayesian epistemology.
+* Hartmann, S., & Sprenger, J. (2010). *Bayesian epistemology*.
+* Howson, C., & Urbach, P. (1993). *Scientific Reasoning: the Bayesian Approach*, Open Court. Lasalle, IL.
 * Pfeifer, N. (2013a). On argument strength. In F. Zenker (Ed.), *Bayesian argumentation. The practical side of probability* (p. 185-193). Dordrecht: Synthese Library Vol. 362 (Springer).
 * Pfeifer, N. (2013b). The new psychology of reasoning: A mental probability logical perspective. *Thinking & Reasoning*, 19(3-4), 329-345.
 * Pfeifer, N. & Tulkki, L. (2017). Abductive, causal, and counterfactual conditionals under incomplete probabilistic knowledge. In Gunzelmann, G., Howes, A., Tenbrink, T., &, Davelaar, E. (Eds.). *Proceedings of the 39th Cognitive Science Society Meeting* (p. 2888-2893).
