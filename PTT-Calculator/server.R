@@ -433,39 +433,39 @@ server <- function(input, output) {
       #-----------------------------------------------------------------------
       # Calculates various measures of confirmation, among them delta P.
       
-      # Nozick, 1981 
+      # Nozick, 1981 (see Pfeifer 2013a) 
       nozick<-pAgC -pAgnC
       
-      # Christensen, 1999 (also 'delta P')
+      # Christensen, 1999, also 'delta P' (see Pfeifer 2013a) 
       deltaP<-pCgA-pCgnA 
       
-      # Kemeny & Oppenheim, 1952
+      # Kemeny & Oppenheim, 1952 (see Pfeifer 2013a) 
       kemeny<-(pAgC-pAgnC)/(pAgC+pAgnC) 
       kemeny<-replaceNA(kemeny)
       
-      # Finch, 1960
+      # Finch, 1960 (see Pfeifer 2013a) 
       finch<- (pCgA/pC)
       finch<-replaceNA(finch)
       finch <- finch - 1
       
-      # Rips, 2001
+      # Rips, 2001 (see Pfeifer 2013a) 
       rips<-pnCgA/(pnC)
       rips<-replaceNA(rips)
       rips<- 1-rips
       
-      # difference (Carnap, 1962; Eells, 1982; Jeffrey, 1992)
+      # 'difference', Carnap, 1962; Eells, 1982; Jeffrey, 1992 (see Hartmann & Sprenger 2010) 
       difference<- pCgA - pC
       
-      # Carnap, 1962 
+      # Carnap, 1962 (see Pfeifer 2013a) 
       carnap<-(pAC)-(pA * pC)
       
-      # Mortimer, 1988
-      mortimer<- pAgC - pA
+      # Mortimer, 1988 (see Pfeifer 2013a) 
+      mortimer<- pAgC - pA 
       
-      # log-ratio measure (Howson & Urbach, 1993)
+      # log-ratio measure (Howson & Urbach, 1993) (see Hartmann & Sprenger 2010) 
       logRatio <- log(pCgA/pA)
       
-      # log-likelihood ratio measure (Hartmann & Sprenger, 2019)
+      # log-likelihood ratio measure (see Hartmann & Sprenger 2010) 
       logLikelihood <- log(pAgC/pAgnC)
       
       #-----------------------------------------------------------------------
