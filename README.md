@@ -3,7 +3,7 @@ Automated analysis of probabilistic truth-table tasks for studies on reasoning u
 
 ***
 #### 2. PTT-Calculator
-The current - unfinished - version can be accessed for testing in the browser [here](https://leon-schoeppl.shinyapps.io/ptt-calculator/), hosted by *shinyapps.io*.
+The current - unfinished - version can be accessed for testing in the browser [here](https://leon-schoeppl.shinyapps.io/ptt-calculator/), hosted by *shinyapps.io*. If you want to actually work with the software, please download it and run it locally.
 
 This small program aims to automatically calculate the uncertainty intervals or probability point-values of sentences featuring two propositions (the *antecedent* (A) and the *consequent* (C)) connected by sentence-connectives. I've implemented a variety (of interpretations) of sentence connectives, and attempted to group them according to their natural language counterparts.
 
