@@ -9,13 +9,16 @@ This small program aims to automatically calculate the uncertainty intervals or 
 
 In addition, for each case the program also calculates the values of 10 different measures of argument strength (or factual support) between the antecedent and the consequent. Keep in mind that not all of these probabilistic measures share the same domain.
 
+**How to use:** 
+First, select the type of sentence connective you are interested in, or the placeholder 'any connective' in case you are interested in all interpretations. Next, select a total number of cases, and choose how many of them make both the antecedent and consequent true ('A ∧ C'), only one of the two ('A ∧ ¬C' or '¬A ∧ C'), neither ('¬A ∧ ¬C') and which of them are hidden ('?'). Finally, decide whether to include the calculation of halfway interpretations (see Pfeifer 2013b, Pfeifer forthcoming) and notions of inferential strength (see Pfeifer 2013a, Sprenger & Hartmann 2010). Press 'Calculate Task' to create and view tables contianing the desired data. For easy of use, the program can also display the formulae used for each output, as well as offers each output-table as pregenerated LaTeX code.
+
 ***
 #### 3. Dice Task Subroutine
 Dice tasks constitute that subset of probabilistic truth table tasks which is restricted to 6 sides of a die, each featuring a symbol and a color. Participants ought to evaluate the probability intervals of conditional sentences like: “If the side facing up shows *antecedent* (A), then the side shows *consequent* (C).”. *A* and *C* are independent, so if one is a symbol, the other is a color (and vice versa). In-completeness of probabilistic knowledge is introduced by leaving some sides of the dice blank, which is marked by *?*.
 
 This R-subroutine calculates and prints the uncertainty intervals identified by different interpretations of natural language conditionals in dice tasks. In addition, it calculates the connection between antecedent and consequent in terms of different notions of argument strength. The function expects as input two boolean vectors of equal length, representing the color and symbol of each visible side, respectively. Vectors shorter than 6 values leave open some uncertainty, leading to probability intervals rather than point values. Written using R version 4.1.0 (2021-05-18).
 
-Example: The experiment shows 2 sides of a die, the first a white triangle, the second a black square. Every other side is marked with a question mark. The conditional in question is “If the side facing up shows a triangle, the side shows black.”. This means that the first side makes the antecedent of the conditional true, but not the consequent, and the second side vice versa. Thus, you input (True, False) as the antecedent vector, and (False, True) as the consequent vector, leaving open the remaining four sides.
+**Example:** The experiment shows 2 sides of a die, the first a white triangle, the second a black square. Every other side is marked with a question mark. The conditional in question is “If the side facing up shows a triangle, the side shows black.”. This means that the first side makes the antecedent of the conditional true, but not the consequent, and the second side vice versa. Thus, you input (True, False) as the antecedent vector, and (False, True) as the consequent vector, leaving open the remaining four sides.
 
 For more detailed explanations and application examples, see Pfeifer 2013a, Pfeifer 2013b, Pfeifer & Tulkki 2017.
 
