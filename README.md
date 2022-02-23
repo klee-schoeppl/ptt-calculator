@@ -1,5 +1,5 @@
 #### 1. Overview
-Automated analysis of probabilistic truth-table tasks for studies on reasoning under uncertainty. Written as research assistant on [BMBF project <01UL1906X>](https://homepages.uni-regensburg.de/~pfn23853/LogWissUns.html) of Dr. Dr. Niki Pfeifer. At this point so-called dice tasks (see **3.**), and a slightly more general analysis for up to 10-case setups (see **2.**) have been implemented.
+Automated analysis of probabilistic truth-table tasks for studies on reasoning under uncertainty. Written as research assistant on [BMBF project <01UL1906X>](https://homepages.uni-regensburg.de/~pfn23853/LogWissUns.html) of Dr. Dr. Niki Pfeifer. At this point (Feb 2022) so-called dice tasks (see **3.**), and a slightly more general analysis for up to 10-case setups (see **2.**) have been implemented.
 
 ***
 #### 2. PTT-Calculator
