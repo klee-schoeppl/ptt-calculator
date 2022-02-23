@@ -50,17 +50,17 @@ server <- function(input, output) {
                   "P(A ∧ C) / (P(A ∧ C) + P(A ∧ ¬C))",
                   "P(A ∧ C) / (P(A ∧ C) + P(A ∧ ¬C) + P(¬A ∧ C))",
                   "P(¬A ∧ ¬C)",
-                  "P(¬A ∨ ¬C)",
-                  "P(¬(A <-> C))",
+                  "P(¬A ∧ C) + P(A ∧ ¬C) + P(¬A ∧ ¬C)",
+                  "P(¬A ∧ C) + P(A ∧ ¬C)",
                   "P(A ∧ ¬C)",
-                  "P(A ∨ ¬C)",
+                  "P(A ∧ C) + P(A ∧ ¬C) + P(¬A ∧ ¬C)",
                   "P(¬C)",
                   "P(¬A)",
                   "P(A)",
                   "P(C)",
-                  "P(A ∨ ¬A)",
+                  "P(A ∧ C) +  P(¬A ∧ C) + P(A ∧ ¬C) + P(¬A ∧ ¬C)",
                   "P(A ∧ ¬A)",
-                  "P(A ∨ C)",
+                  "P(A ∧ C) +  P(¬A ∧ C) + P(A ∧ ¬C)",
                   "P(¬A ∧ C)",
                   "Here, P(A ∧ C) is calculated by dividing by visible sides only.",
                   "P(C | A) - P(C | ¬A)",
@@ -177,7 +177,7 @@ server <- function(input, output) {
       } else {
         output$text <- renderText("")
       }
-      #--------------------------------------------------------------------------------
+      #-------------------------------------------------------------------------
       # Saves the inputs to two Boolean vectors;
       vecA <- logical()
       vecC <- logical()
@@ -206,7 +206,7 @@ server <- function(input, output) {
         vecC <- c(vecC, FALSE)
         i <- i - 1
       }
-      #------------------------------------------------------------------------
+      #-------------------------------------------------------------------------
       # Creating the table.
       aBlanks = list()
       for (i in 1 : input$caseCount){
@@ -228,7 +228,7 @@ server <- function(input, output) {
           cBlanks[[i]]<-constituents[,(i+input$blank)]
         }
       }
-      #-----------------------------------------------------------------------
+      #-------------------------------------------------------------------------
       # function substituting 0 for NA values resulting from division by 0.
       replaceNA <- function(column){
         for (i in 1 : length(column)){
@@ -238,7 +238,7 @@ server <- function(input, output) {
         }
         return(column)
       }
-      #------------------------------------------------------------------------
+      #-------------------------------------------------------------------------
       # Create vectors containing the count of relevant cases
       # nX contains the count of ¬X cases
       # XY contains the count of X ∧ Y cases
@@ -312,7 +312,7 @@ server <- function(input, output) {
       pAC <- AC / input$caseCount
       pnAnC <- nAnC / input$caseCount
       
-      #-----------------------------------------------------------------------
+      #-------------------------------------------------------------------------
       # functions creating halfway-interpretation tables and interpretation rows
       createTable <- function(symbol, fullignore, interpretation){
         table = data.frame(
@@ -343,7 +343,7 @@ server <- function(input, output) {
         )
         return(row)
       }
-      #------------------------------------------------------------------------
+      #-------------------------------------------------------------------------
       # Calculates the uncertainty intervals for a wide range of 
       # interpretations of the natural language conditionals used. 
       
@@ -426,11 +426,7 @@ server <- function(input, output) {
       # OR - interpretation
       disjunction <- 1 - pnAnC
       
-      
-      
-      
-      
-      #-----------------------------------------------------------------------
+      #-------------------------------------------------------------------------
       # Calculates various measures of confirmation, among them delta P.
       
       # Nozick, 1981 (see Pfeifer 2013a) 
@@ -491,7 +487,7 @@ server <- function(input, output) {
         
         interpretationsxTable <- interpretationsTable
         interpretationsxTable[["interpretation"]] <- c("conjunction ($\\land$)")
-      
+        
         
         
         if (input$includeH){
@@ -545,7 +541,7 @@ server <- function(input, output) {
           interpretationsxTable <- rbind(interpretationsxTable, createTable("$\\land$", fullignoreConjunction, conjunction))
           interpretationsxTable <- rbind(interpretationsxTable, createTable("special-$\\land$", specialIgnoredConjunction, conjunction))
           
-        
+          
         }
       }
       
@@ -705,4 +701,3 @@ server <- function(input, output) {
     }
   })
 }
-
