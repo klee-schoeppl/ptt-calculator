@@ -3,9 +3,9 @@ library(tidyverse)
 library(dplyr)
 library(rapportools)
 fluidPage(
-
+    
     titlePanel("PTT-Calculator"),
-
+    
     
     sidebarLayout(
         
@@ -46,13 +46,13 @@ fluidPage(
                           value = FALSE, width = NULL),
             checkboxInput("includeH", "Include halfway interpretations",
                           value = FALSE, width = NULL),
-            checkboxInput("includeN", "Include Notions of Inferrential Strength",
+            checkboxInput("includeN", "Include Notions of Argument Strength",
                           value = FALSE, width = NULL),
             
             actionButton("show", "Display formulae"),
             actionButton("do","Calculate Task")
         ),
-
+        
         # Show a plot of the generated distribution
         mainPanel(
             textOutput("text"),
@@ -64,6 +64,4 @@ fluidPage(
         )
     )
 )
-
-
 
